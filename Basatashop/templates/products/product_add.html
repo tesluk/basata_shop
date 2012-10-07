@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/products/newproduct/{{ type.id }}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+	
+	Название:<input type="text" id="name" name="name" required="true" />
+	<br />
+	Краткое описание:<input type="text" id="sdescr" name="sdescr" required="true" />
+	<br />
+	Изобращение:<input type="file" id="picture" name="picture" required="true" />
+	<br />
+	Полное описание:<textarea name="descr" cols="40" rows="5" required="true">Введите описание...</textarea>
+	<br />
+	<input type="submit" value="Отправить" />
+</form>
+{% endblock %}

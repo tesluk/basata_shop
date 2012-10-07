@@ -1,0 +1,38 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Инструкция по сборке {% endblock %}
+
+{% block content %}
+
+<h1>
+  <p align="left"> ИНСТРУКЦИЯ ПО СБОРКЕ</p>
+</h1>
+<br />
+{% if user.is_staff %}
+<p>
+<a href="/instructions/add_new">Добавить новую инструкцию</a><br/>
+</p>
+{% endif %}
+{%if table %}
+
+	<table width="90%"  border="0" border="0" cellspacing="5" cellpadding="5" align="center">
+	{%for ent in table %}
+		<tr>
+			<td align ="left" valign="top" valign="center" width="170">
+<!--<img src="/{{ ent.picture_l }}" width="150" />-->
+<a class="first" href="/{{ ent.picture_b }}"><img src="/{{ ent.picture_l }}"></a>							
+			</td>			
+			<td align="left" valign="top">
+				<b>{{ent.name}}</b><br/>
+				{{ent.text}}<br/>
+				{% if user.is_staff %}
+				<a href="/instructions/edit/{{ ent.id }}/" />Редактировать</a>&nbsp;&nbsp;
+				<a href="/instructions/delete/{{ ent.id }}/" />Удалить</a> <br/>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}
+{% endblock %} 

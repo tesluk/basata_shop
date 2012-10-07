@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/products/newchar/{{ product.id }}/" method="post" > {% csrf_token %}
+	
+	Название:<input type="text" id="char_type" name="char_type" required="true" />
+	<br />
+	Размер:<input type="number" id="size" name="size" required="true" />
+	<br />
+	Цена:<input type="number"  name="price" required="true" />
+	<br />
+	<input type="submit" value="Отправить" />
+</form>
+{% endblock %}

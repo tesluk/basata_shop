@@ -1,0 +1,14 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<form action="/instructions/newinstruct/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+	
+	Название: <input type="text" id="name" name="name" required="true" />
+	<br />
+	<input type="file" name="img" accept="image/*" required="true" />
+	<br />
+	<textarea name="text"  id="text" cols="40" rows="5" required="true">Текст описания</textarea>
+	<br />
+	<input type="submit" value="Загрузить" />
+</form>
+{% endblock %}
+

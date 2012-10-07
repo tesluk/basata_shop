@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+	<h2>Добавить файл</h2>
+    <form method="post" action="/submit_doc/" enctype="multipart/form-data"> {% csrf_token %}
+	   <br>Файл<br>
+	    <input type="file" name="doc" accept="application/pdf, application/msword, application/msexcel, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="true">
+	    <br>Описание<br>
+		<textarea name="text" cols="40" rows="5" required="true"></textarea><br>
+		<input type="submit" value="Готово" />
+	</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Заказ{% endblock %}
+
+{% block content %}
+<form action="/basket/addorder/" method="post">
+	<table>
+		<tr>
+			<td>Адрес доставки:</td><td>
+			<input type="text" name='address' required="true" />
+			</td>
+		</tr>
+		<tr>
+			<td> Телефон:</td>
+			<td>
+			<input type="tel" name="tel" required="true" />
+			</td>
+		</tr>
+		<tr>
+			<td>Дополнительная информация:</td><td>			<textarea name="comment"></textarea></td>
+		</tr>
+		<p align="center"> <h3> Сумма заказа: {{ basket.summ }} </h3> </p>
+	</table>
+	<input type="submit"value="Подтвердить заказ" />
+</form>
+{% endblock %} 

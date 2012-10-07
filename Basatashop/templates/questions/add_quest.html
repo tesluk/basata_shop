@@ -1,0 +1,10 @@
+
+<form action="/questions/addquest/" method="post"> {% csrf_token %}
+	Имя 	<input type="text" id="fio" name="fio" required="true" />
+	<br />
+	E-mail <input type="email" id="email" name="email" required="true" />
+	<br />
+	Вопрос <input type="text" id="text" name="text" required="true" />
+	<br />
+	<input type="submit" value="Отправить" />
+</form>

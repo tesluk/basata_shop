@@ -1,0 +1,25 @@
+<br /><br />
+<table>
+	<tr>
+		<td align="left"><h4> {{ quest.fio }} - {{ quest.adding_time }} </h4></td>
+	</tr>
+	<tr>
+		<td align="left"> Вопрос:  {{ quest.text }} </td>
+	</tr>
+	{% if quest.answer %}
+	<tr>
+		<td align="left"> Ответ: {{ quest.answer }} </td>
+	</tr>
+	{% else %}
+	{% if user.is_staff %}
+	<tr>
+		<td><a href="/questions/ans/{{ quest.id }}">Ответить</a></td>
+	</tr>
+	{% endif %}
+	{% endif %}
+	{% if user.is_staff %}
+	<tr>
+		<td><a href="/questions/delete/{{ quest.id }}">Удалить</a></td>
+	</tr>
+	{% endif %}
+</table>

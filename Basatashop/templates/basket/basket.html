@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+
+{% if not basket or not basket.orders %}
+<p align="center">
+	<h3>Ваша корзина пока пуста</h3>
+</p>
+{% else %}
+<form action="/basket/update/" method="post">
+	<table>
+		{% for order in basket.orders %}
+		<tr>
+			<td><a href="/products/{{ order.characteristic.product.prod_type.group.id }}/{{ order.characteristic.product.prod_type.id }}/{{ order.characteristic.product.id }}/">{{ order.characteristic.name }}</a></td>
+			<td>{{ order.characteristic.char_type }}</td>
+			<td>{{ order.characteristic.size }}</td>
+			<td>{{ order.characteristic.prise }}</td>
+			<td><input type="number" name="char{{ order.characteristic.id }}" value="{{ order.numb }}"/></td>
+			<td><a href="/basket/delete/{{ order.characteristic.id }}">Удалить</a></td>
+			</tr>
+			{% endfor %}
+			</table>
+			Итого: {{ basket.summ }}
+			<input type="submit" value="Обновить корзину"/>
+			</form>
+			<form action="/basket/order">
+			<input type="submit" value="Оформить заказ" />
+			</form>
+			{% endif %}
+
+			{% endblock %}

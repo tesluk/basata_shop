@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Wholesale{% endblock %}
+
+{% block content %} <h2>Оптовым покупателям</h2>
+<br>
+
+{% if user.is_staff %}
+	<form action="/add_doc/" method="post"> {% csrf_token %} <input type="submit" value="Добавить документы"></form>
+{% endif %}
+<table border=4>
+<caption align=top>Файлы</caption>
+	{%for doc in docs%}
+	<tr>
+		<td width="20%"><a href="/wholesale/{{ doc.id }}"/><img src = "/Entities/static/icons/{{doc.doc_type}}.jpg"/></a></td>
+		<td width="20%"><a href="/wholesale/{{ doc.id }}"/>{{doc.doc_file_name}}</a></td>
+		<td width="45%">{{doc.description}}</td>
+		{% if user.is_staff %}
+		<td width="15%"><a href="/delete/{{ doc.id }}"/> Удалить </a></td>
+		{% endif %}
+	</tr>
+	{%endfor%}
+</table>
+{% endblock %}

@@ -1,0 +1,8 @@
+<table>
+	<tr>
+		<td><a href="/products/{{ group.id }}/{{ type.id }}/" /><img src="/{{ type.picture_l }}" /></a></td>
+		<td><a href="/products/{{ group.id }}/{{ type.id }}/" /><h3>{{ type.name }}</h3></a></td>
+		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/{{ type.id }}/" />Удалить</a></td>
+		{% endif %}
+	</tr>
+</table>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+ <h1> {% trans "Редактирование персоналых даных" %} </h1>
+ <form method="post" action="">{% csrf_token %}
+ <div>
+ 	<table>
+		<tr> 	
+    		<th>{% trans "Username" %}</th> 
+    		<th><input type="text" name="username" value="{{username}}"/></th>
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Email " %}</th> 
+    		<th><input type="text" name="email" value="{{email}}"/></th>    		
+    	</tr>    	
+    	<tr>
+    		<th> Имя и фамилия </th>    		
+    		<th> <input type="text" name="first_sec_name" value="{{first_sec_name}}"/></th>
+    	</tr>
+    	<tr>
+    		<th> Новый пароль </th>
+    		<th> <input type="password" name="new_password"/> </th>
+    	</tr>
+    	<tr>
+    		<th> Подтвердите новый пароль </th>
+    		<th> <input type="password" name="confirmed_new_password"/> </th>
+    	</tr>
+    	<tr>
+    		<th> Компания </th>
+    		<th><a href="/edit_company">редактировать</a></th>
+    	</tr>
+    	<tr>
+    		<th> {% trans "Get spam" %} </th>    				
+    		<th><input type="checkbox" name="get_spam" checked="{{get_spam}}"/></th>    		
+    	</tr>
+    </table> 
+ </div> 
+ <input type="submit" value="OK" / class="clearfix">
+ </form>
+ {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<table>
+	{% for quest in questions %}
+	<tr><td> {% include "questions/quest.html" %} </td></tr> 
+	{% endfor %}
+</table>
+<br />
+
+{% include "questions/add_quest.html" %}
+
+{% endblock %}

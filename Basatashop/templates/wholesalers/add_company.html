@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Создать компанию{% endblock %}
+{% block content %}
+	<h2>Добавить информацию о компании</h2>
+	<table width="70%">
+    <form method="post" action="/submit_company/" enctype="multipart/form-data"> {% csrf_token %}
+        <tr> <td width="15%">Название компании</td> <td><input type="text" id="name" name="name" required="true" maxlength="50"></td></tr>
+        <tr> <td width="15%">Контактный телефон</td> <td><input type="text" name="tel" required="true" maxlength="20"></td></tr>
+        <tr> <td width="15%">Город</td> <td><input type="text" name="city" required="true" maxlength="50"></td></tr>
+        <tr> <td width="15%">Адрес</td> <td><input type="text" name="address" required="true" maxlength="100"></td></tr> 
+        <tr> <td width="15%">Ваша должность</td> <td><input type="text" name="post" required="true" maxlength="50"></td></tr> 
+	    <tr> <td width="15%">Описание компании</td><td><textarea name="description" cols="40" rows="5" required="true"></textarea></td></tr> 
+		<tr> <td><input type="submit" value="Готово"/></td></tr> 
+	</form>
+	</table>
+{% endblock %}

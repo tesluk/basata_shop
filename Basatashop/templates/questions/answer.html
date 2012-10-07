@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/questions/addans/{{ quest.id }}/" method="post"> {% csrf_token %}
+	Вопрос от  {{ quest.fio }}
+	<br />
+	{{ quest.text }}
+	<input type="text" id="ans" name="ans" required="true" value="Введите ответ..." />
+	<br />
+	<input type="submit" value="Отправить" />
+</form>
+{% endblock %}

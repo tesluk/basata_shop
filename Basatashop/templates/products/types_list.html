@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<table>
+	{% for type in prod_types %}
+	<tr>
+		<td> {% include "products/type.html" %} </td>
+	</tr>
+	{% endfor %}
+</table>
+<br />
+{% if user.is_staff %} <a href="/products/addtype/{{ group.id }}/">Добавить тип товаров</a>
+{% endif %}
+{% endblock %}

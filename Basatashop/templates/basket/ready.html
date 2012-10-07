@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Заказ{% endblock %}
+
+{% block content %}
+
+Ваш заказ принят и отправлен на обработку.
+Номер заказа: <h4>{{ order_id }}</h4>
+Состояние заказа можете посмотреть в разделе <a href="/basket/order_state">"Состояние заказов"</a>.
+
+{% endblock %}

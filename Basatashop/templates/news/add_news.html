@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Создать новoсть{% endblock %}
+{% block content %}
+	<h2>Добавить новoсть
+	</h2>
+
+    <form method="post" action="/submit_news/" enctype="multipart/form-data"> {% csrf_token %}
+	    {% if error %}
+	        <p style="color: red;">Поля не могут быть пустыми.</p>
+	    {% endif %}
+        Заголовок <br>
+	    <input type="text" name="title" required="true">
+	   <br>Изображение<br>
+	    <input type="file" name="img" accept="image/jpeg,image/png,image/gif,image/bmp" required="true">
+	    <br>Текст <br>
+		<textarea name="text" cols="40" rows="5" required="true">Введите текст новости..</textarea><br>
+		<input type="submit" value="Готово" />
+	</form>
+
+{% endblock %}

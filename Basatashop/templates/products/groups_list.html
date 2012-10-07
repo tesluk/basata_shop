@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<table>
+	{% for group in prod_groups %}
+
+	{% include "products/group.html" %}
+
+	{% endfor %}
+</table>
+<br />
+{% if user.is_staff %} <a href="/products/addgroup/">Добавить группу товаров</a>
+{% endif %}
+{% endblock %}

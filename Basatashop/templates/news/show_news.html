@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}News{% endblock %}
+
+{% block content %} <h2>Блог/новости</h2>
+<br>
+
+
+{% if user.is_staff %}
+	<form action="/news/add_news/"><input type="submit" value="Добавить новость"></form>
+{% endif %} 
+<table border=4>
+	{%for i in news%}
+	<tr>
+		<td align="center", colspan="2"><br /><h2> {{i.title}} </h2><br></td>
+	</tr>
+	<tr>
+		<td width="20%"><img src = "/{{i.picture_b}}"/></td>
+		<td width="80%">{{i.text}}</td>
+		</tr>
+		{%endfor%}
+		</table>
+		{% endblock %}

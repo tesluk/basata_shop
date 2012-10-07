@@ -1,0 +1,23 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<table width="90%"  border="0" border="0" cellspacing="5" cellpadding="5" align="center">
+<tr>
+<td align ="left" valign="top" valign="center" width="170">
+<img src="/{{ inst.picture_l }}" width="150" />
+</td>
+<td align="left" valign="top">
+<form action="/instructions/saveedited/{{inst.id}}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+	
+	Название: <input type="text" id="name" name="name" required="true"  value="{{inst.name}}"/>
+	<br />
+	<input type="file" name="img" accept="image/*" required="true" default="{{inst.name}}" />
+	<br />
+	<textarea name="text"  id="text" cols="40" rows="5" required="true">{{inst.text}}</textarea>
+	<br />
+	<input type="submit" value="Загрузить" />
+</form>
+</td>
+</tr>
+</table>
+{% endblock %}
+
