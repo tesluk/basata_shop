@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'Basatashop.Basket',
     'Basatashop.instructions',
     'Basatashop.news',
-    'django_evolution',
+    #'django_evolution',
 )
 
 # A sample logging configuration. The only tangible logging
