@@ -35,10 +35,17 @@ class Instruction (models.Model):
 class Product (models.Model):
     prod_type = models.ForeignKey(Product_type)
     name = models.CharField(max_length=60)
+    
+    price = models.FloatField()
+    quantity = models.IntegerField()
+    model3D = models.FileField(upload_to='Entities/static/products', blank=True, null=True)
+        
     sdescription = models.TextField(blank=True, null=True)
     picture = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_l = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_b = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
+    
+    
     description = models.TextField()
     instrucrion = models.ForeignKey(Instruction, blank=True, null=True)
     
@@ -49,9 +56,7 @@ class Characteristic (models.Model):
     product = models.ForeignKey(Product)
     charac_type = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
-    size = models.IntegerField()
-    prise = models.FloatField()
-    
+        
     def __unicode__(self):
         return self.name
     
