@@ -132,19 +132,24 @@ def add_char (request, pr_id):
 
     return HttpResponseRedirect('/products/' + str(pr.prod_type.group.id) + '/' + str(pr.prod_type.id) + '/' + str(pr.id) + '/')
 
-def add_prod (request, tp_id):
-    
+def add_prod (request, tp_id):    
     tp = Product_type.objects.all().get(id=tp_id)
     pr = Product()
     pr.prod_type = tp
     pr.name = request.POST['name']
+    pr.price = request.POST['price']
+    pr.quantity = request.POST['quantity']
     pr.sdescription = request.POST['sdescr']
     pr.description = request.POST['descr']
     pr.picture = request.FILES['picture']
-    
+    pr.model3D  = request.FILES['model']
     pr.save()
-    resize_picture(pr)
-    
+    ch  = Characteristic()
+    ch.product = pr;
+    ch.name = request.POST['ch1_name']
+    ch.charac_type = request.POST['ch1_value']
+    ch.save()
+    resize_picture(pr)    
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
 def delete_prod_group (request, gr_id):
@@ -166,3 +171,6 @@ def delete_prod (request, gr_id, tp_id, pr_id):
     Product.objects.all().get(id=pr_id).delete()
     
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
+
+
+

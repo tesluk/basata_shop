@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 <form action="/products/newproduct/{{ type.id }}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
-	
 	Название:<input type="text" id="name" name="name" required="true" />
 	<br />
 	Краткое описание:<input type="text" id="sdescr" name="sdescr" required="true" />
 	<br />
 	Изобращение:<input type="file" id="picture" name="picture" required="true" />
 	<br />
+	3D модель:<input type="file" id="model" name="model" required="true" />
+	<br />
+	Количество:<input type="text" id="quantity" name="quantity" required="true" />
+	<br />
+	Цена:<input type="text" id="price" name="price" required="true" />
+	<br />
 	Полное описание:<textarea name="descr" cols="40" rows="5" required="true">Введите описание...</textarea>
 	<br />
-	<input type="submit" value="Отправить" />
+	Характеристики	
+	<br />
+	Название  Значение
+	<br />
+    <input type="text" id="ch1_name" name="ch1_name" required="true" /> : <input type="text" id="ch1_value" name="ch1_value"" required="true" />
+	<br />
+	<input type="submit" value="Готово" />
 </form>
 {% endblock %}
