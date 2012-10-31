@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="/products/newproduct/{{ type.id }}/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+<form action="/products/newproduct/{{ type.id }}/"  name = "addprod" method="post" enctype="multipart/form-data"> {% csrf_token %}
 	Название:<input type="text" id="name" name="name" required="true" />
 	<br />
 	Краткое описание:<input type="text" id="sdescr" name="sdescr" required="true" />
 	<br />
-	Изобращение:<input type="file" id="picture" name="picture" required="true" />
+	Изобращение:<input type="file" accept="image/*" id="picture" name="picture" required="true" />
 	<br />
-	3D модель:<input type="file" id="model" name="model" required="true" />
+	3D модель: <input name="userfile" value="" type="file" id="model" name="model"
+onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')+1,userfile.value.length).toLowerCase()!='dae') 
+{alert('Необходимо выбрать DAE файл для загрузки!'); userfile.value= null; return;};">
+    <br/>
+	Количество:<input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" />
 	<br />
-	Количество:<input type="text" id="quantity" name="quantity" required="true" />
-	<br />
-	Цена:<input type="text" id="price" name="price" required="true" />
+	Цена:<input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" />
 	<br />
 	Полное описание:<textarea name="descr" cols="40" rows="5" required="true">Введите описание...</textarea>
 	<br />
