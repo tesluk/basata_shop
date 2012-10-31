@@ -25,3 +25,11 @@ h1 {
 	text-transform: uppercase;
 	text-align: center;
 }
+
+#logo{
+	background: url(../images/logo_stat.png)
+}
+
+#logo:hover {
+	background: url(../images/logo_anim.gif)
+}
