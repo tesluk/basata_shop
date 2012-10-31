@@ -5,6 +5,7 @@ from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
+from django.shortcuts import render_to_response
 
 
 def get_all_groups (request):
@@ -132,7 +133,7 @@ def add_char (request, pr_id):
 
     return HttpResponseRedirect('/products/' + str(pr.prod_type.group.id) + '/' + str(pr.prod_type.id) + '/' + str(pr.id) + '/')
 
-def add_prod (request, tp_id):    
+def add_prod (request, tp_id):   
     tp = Product_type.objects.all().get(id=tp_id)
     pr = Product()
     pr.prod_type = tp
@@ -142,14 +143,14 @@ def add_prod (request, tp_id):
     pr.sdescription = request.POST['sdescr']
     pr.description = request.POST['descr']
     pr.picture = request.FILES['picture']
-    pr.model3D  = request.FILES['model']
-    pr.save()
-    ch  = Characteristic()
+    pr.model3D  = request.FILES['userfile']
+    pr.save()       
+    ch = Characteristic()
     ch.product = pr;
     ch.name = request.POST['ch1_name']
     ch.charac_type = request.POST['ch1_value']
     ch.save()
-    resize_picture(pr)    
+    resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
 def delete_prod_group (request, gr_id):
