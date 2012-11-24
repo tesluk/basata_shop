@@ -69,8 +69,13 @@ urlpatterns = patterns('',
     #END BODIA 
     
     #START SEKAS
-    (r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^register/edit/$', register_edit, name='registration_edit'),
+    url(r'^accounts/register/$', 'registration.views.sregister'),
+    url(r'accounts/login/$', 'registration.views.login'),
+    url(r'accounts/logout/$', 'registration.views.logout'),
+    url(r'^register/edit/$', 'registration.views.sregister_edit'),
+    
+    #(r'^accounts/', include('registration.backends.default.urls')),
+    #url(r'^register/edit/$', register_edit, name='registration_edit'),
     #END SEKAS
      
      #START TANIA
