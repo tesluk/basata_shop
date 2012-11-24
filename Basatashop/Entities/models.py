@@ -1,3 +1,4 @@
+
 from django.db import models
 from registration.models import User
 
@@ -128,6 +129,16 @@ class Question (models.Model):
     text = models.TextField()
     adding_time = models.DateTimeField()
     answer = models.TextField(blank=True, null=True)  
-    
-    
-      
+        
+class SUser (models.Model):
+    login = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 20)
+    last_name = models.CharField(max_length = 20)
+    birthday = models.DateField()
+    country = models.CharField(max_length = 20)
+    city = models.CharField(max_length = 20)
+    street = models.CharField(max_length = 30)
+    email = models.EmailField(max_length = 40)    
+    getSpam = models.BooleanField()
+    is_staff = models.BooleanField()
