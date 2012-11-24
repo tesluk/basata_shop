@@ -70,13 +70,13 @@ class Price (models.Model):
 class Delivery (models.Model):
     supplier = models.CharField(max_length=30, blank=True, null=True)
     date = models.DateTimeField()
-    total = models.IntegerField()
+    total = models.FloatField()
     
 class Del_item (models.Model):
     delivery = models.ForeignKey(Delivery)
     product = models.ForeignKey(Product)
     quantity = models.IntegerField()
-    price = models.IntegerField()    
+    price = models.FloatField()    
 
 class Basket (models.Model):
     BASKET_CHOICES = (
