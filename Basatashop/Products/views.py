@@ -1,12 +1,13 @@
 from django.template.loader import get_template
-from Basatashop.Entities.models import Product_group, Product_type, Product, \
-    Characteristic
+from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from Basatashop.Entities.models import SUser
+from PIL import Image
+
 
 def get_all_groups (request):
     
@@ -104,17 +105,22 @@ def add_type (request, gr_id):
     tp = Product_type()
     tp.group = gr
     tp.name = request.POST['name']
-    tp.picture = request.FILES['img']
+    if 'img' in request.FILES:
+        tp.picture = request.FILES['img']
+    else: 
+        tp.picture = 'Entities/static/products/standart.png';    
     tp.save()
-    resize_picture(tp)
-    
+    resize_picture(tp)    
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
 
 def add_group (request):
     
     gr = Product_group()
     gr.name = request.POST['name']
-    gr.picture = request.FILES['img']
+    if 'img' in request.FILES:
+        gr.picture = request.FILES['img']
+    else: 
+        gr.picture = 'Entities/static/products/standart.png';  
     gr.save()
     resize_picture(gr)    
 
@@ -142,8 +148,14 @@ def add_prod (request, tp_id):
     pr.quantity = request.POST['quantity']
     pr.sdescription = request.POST['sdescr']
     pr.description = request.POST['descr']
-    pr.picture = request.FILES['picture']
-    pr.model3D  = request.FILES['userfile']
+    if 'picture' in request.FILES:
+        pr.picture = request.FILES['picture']
+    else: 
+        pr.picture = 'Entities/static/products/standart.png';    
+    if 'userfile' in request.FILES:
+        pr.model3D = request.FILES['userfile']
+    else: 
+        pr.model3D = 'Entities/static/products/banana.dae';     
     pr.save()       
     ch = Characteristic()
     ch.product = pr;
@@ -174,4 +186,12 @@ def delete_prod (request, gr_id, tp_id, pr_id):
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
 
-
+def get_all_groups_xml (request):
+    
+    groups = Product_group.objects.all()
+    for gr in groups:
+        gr.count = len(Product_type.objects.all().filter(group = gr))
+    t = get_template('xml/groups.xml')
+    c = RequestContext(request, {'groups':groups})
+    
+    return HttpResponse(t.render(c))

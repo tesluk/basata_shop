@@ -30,6 +30,14 @@ h1 {
 	background: url(../images/logo_stat.png)
 }
 
+#logo a{
+	float: right;
+	margin-bottom: 0px; 
+	margin-right: 0px; 
+	width: 150px; 
+	height: 100px;
+}
+
 #logo:hover {
 	background: url(../images/logo_anim.gif)
 }
