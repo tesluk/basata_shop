@@ -5,6 +5,8 @@
 	<br />
 	Краткое описание:<input type="text" id="sdescr" name="sdescr" required="true" />
 	<br />
+	Производитель:<input type="text" id="producer" name="producer" required="true" />
+	<br />
 	Изображение:<input type="file" accept="image/*" id="picture" name="picture" />
 	<br />
 	3D модель: <input name="userfile" value="" type="file" id="model" name="model"
@@ -14,8 +16,6 @@ onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')
 	Количество:<input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" />
 	<br />
 	Цена:<input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" />
-	<br />
-	Полное описание:<textarea name="descr" cols="40" rows="5" required="true">Введите описание...</textarea>
 	<br />
 	Характеристики	
 	<br />

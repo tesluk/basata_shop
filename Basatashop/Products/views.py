@@ -1,5 +1,5 @@
 from django.template.loader import get_template
-from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic
+from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
@@ -7,6 +7,8 @@ from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from PIL import Image
 import os
+import time
+from datetime import datetime, timedelta
 
 def get_all_groups (request):
     
@@ -152,20 +154,19 @@ def add_prod (request, tp_id):
     pr = Product()
     pr.prod_type = tp
     pr.name = request.POST['name']
-    pr.price = request.POST['price']
+    pr.producer = request.POST['producer']
     pr.quantity = request.POST['quantity']
     pr.sdescription = request.POST['sdescr']
-    pr.description = request.POST['descr']
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
         if 'userfile' in request.FILES:        
-            pr.model3D = request.FILES['userfile']
+            pr.model= request.FILES['userfile']
             pr.save()
             new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae';
-            os.rename(str(pr.model3D), new_name)
-            pr.model3D = new_name
+            os.rename(str(pr.model), new_name)
+            pr.model = new_name
         else: 
-            pr.model3D = 'Entities/static/banana.dae';  
+            pr.model = 'Entities/static/banana.dae';  
         pr.save()  
         typ = str(pr.picture).split('.') 
         new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
@@ -174,6 +175,11 @@ def add_prod (request, tp_id):
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
     pr.save()
+    price = Price()
+    price.value = request.POST['price']
+    price.product = pr
+    price.date_init = datetime.today().date()
+    price.save()
     ch = Characteristic()
     ch.product = pr;
     ch.name = request.POST['ch1_name']
@@ -194,10 +200,8 @@ def delete_prod_type (request, gr_id, tp_id):
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
 
 def delete_prod (request, gr_id, tp_id, pr_id):
-    
-    tp = Product.objects.all().get(id=pr_id).group
-    Product.objects.all().get(id=pr_id).delete()
-    
+   # tp = Product.objects.all().get(id=pr_id).group
+    Product.objects.all().get(id=pr_id).delete()    
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
 
