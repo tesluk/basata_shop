@@ -4,12 +4,26 @@
 {% block content %}
 <FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
 <form method="post" action=".">{% csrf_token %}
-  {{ form.as_p }}
+	<table>
+		<tr>
+			<th>
+				{% trans "Username" %}
+			</th>
+			<th>
+				<input type="text" name="username"/>
+			</th>			
+		</tr>
+		<tr>
+			<th>
+				{% trans "Password" %}
+			</th>
+			<th>
+				<input type="password" name="password"/>
+			</th>			
+		</tr>  				
+	</table>
 
   <input type="submit" value="{% trans 'Log in' %}" />
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
-<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
-<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
 {% endblock %}
