@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block content %}
+<FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
 <form method="post" action=".">{% csrf_token %}
   {{ form.as_p }}
 
