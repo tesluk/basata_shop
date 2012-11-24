@@ -1,0 +1,8 @@
+{% load static %}
+<types group_id="{{ group.id }}" group_name="{{ group.name }}">
+	{% for type in types %}
+	<type id="{{ type.id }}" name="{{ type.name }}" count="{{ type.count }}">
+		<pic>{{ type.picture_l }}</pic>
+	</type>	
+	{% endfor %}
+</types>

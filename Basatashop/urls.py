@@ -101,4 +101,8 @@ urlpatterns = patterns('',
 #     (r'^products/delete/(\d{1,3})/$', 'Products.views.delete'),
 #     (r'^products/saveedited/(\d{1,3})/$', 'Products.views.save_edited'),
      #END NASTIA
+     
+     # XML
+     (r'^xml/groups/$', 'Products.views.get_all_groups_xml'),
+     # end XML
 )
