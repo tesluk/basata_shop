@@ -104,17 +104,22 @@ def add_type (request, gr_id):
     tp = Product_type()
     tp.group = gr
     tp.name = request.POST['name']
-    tp.picture = request.FILES['img']
+    if 'img' in request.FILES:
+        tp.picture = request.FILES['img']
+    else: 
+        tp.picture = 'Entities/static/products/standart.png';    
     tp.save()
-    resize_picture(tp)
-    
+    resize_picture(tp)    
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
 
 def add_group (request):
     
     gr = Product_group()
     gr.name = request.POST['name']
-    gr.picture = request.FILES['img']
+    if 'img' in request.FILES:
+        gr.picture = request.FILES['img']
+    else: 
+        gr.picture = 'Entities/static/products/standart.png';  
     gr.save()
     resize_picture(gr)    
 
