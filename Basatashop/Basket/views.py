@@ -142,7 +142,7 @@ def get_basket_summ (basket):
 def order_state (request):
     c = {}
     c.update(csrf(request))
-    user1 = request.user; 
+    user1 = request.session['user']; 
     print user1.is_staff, user1.username
     if (user1.is_staff == 1):
         try:
