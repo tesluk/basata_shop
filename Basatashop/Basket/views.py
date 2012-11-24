@@ -133,8 +133,8 @@ def get_basket_summ (basket):
 def order_state (request):
     c = {}
     c.update(csrf(request))
-    user1 = request.user; 
-    print user1.is_staff, user1.username
+    user1 = request.session['user']; 
+    print user1.is_staff, user1.login
     if (user1.is_staff == 1):
         try:
             baskets = Basket.objects.filter(btype='R')
