@@ -168,7 +168,7 @@ def sregister_edit(request):
                     userExist = SUser.objects.all().get(login=request.POST['username'])
                     if userExist.login == cur_user.login:                        
                         cur_user.login = request.POST['username']
-                        cur_user.first_name = cur_user.birthday
+                        cur_user.first_name = request['first_name']
                         cur_user.last_name = request.POST['last_name']                
                         cur_user.country = request.POST['country']
                         cur_user.city = request.POST['city']
@@ -216,7 +216,7 @@ def login(request):
             try:
                 user = SUser.objects.all().get(login=request.POST['username'])                        
                 if user.password == request.POST['password']: 
-                    user.is_authenticated = 1            
+                    user.is_authenticated = 1                              
                     request.session['user'] = user       
                     return render_to_response('index.html',{'user':user},context_instance=RequestContext(request))
                 else:
