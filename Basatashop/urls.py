@@ -42,6 +42,7 @@ urlpatterns = patterns('',
       
       (r'^products/newgroup/$', 'Products.views.add_group'),
       (r'^products/newtype/(\d{1,3})/$', 'Products.views.add_type'),
+
       (r'^products/newproduct/(\d{1,3})/$', 'Products.views.add_prod'),
       (r'^products/newchar/(\d{1,3})/$', 'Products.views.add_char'),
 #      (r'^products/savegroup/(\d{1,3})/$', 'Products.views.save_group'),
@@ -57,6 +58,7 @@ urlpatterns = patterns('',
      
      (r'^accounts/profile/$', 'basatashop.views.index'),
      # END TAB
+
      
      #START BODIA
     url(r'^$', 'basatashop.views.index'),
