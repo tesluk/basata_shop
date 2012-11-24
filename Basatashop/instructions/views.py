@@ -28,7 +28,10 @@ def add_instruct(request):
 def get_add_instruct (request):
     
     t = get_template('instructions/add_new.html')
-    c = RequestContext(request, { }) 
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user']})
+    else:
+        c = RequestContext(request, { })
     return HttpResponse(t.render(c))
 
 def delete(request, _id):
