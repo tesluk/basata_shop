@@ -7,24 +7,18 @@ from Basatashop.Entities.contex_generator import get_base_context
 
 import smtplib
 from smtplib import SMTPException
-from Basatashop.Entities.models import SUser
+from django.contrib.auth.models import User
 
 def show_news(request):
     news = News.objects.order_by("-id")
-    if "user" in request.session:
-        c = RequestContext(request, {'user':request.session['user']})
-    else:
-        c = RequestContext(request, {})
+    c = RequestContext(request, {'user':request.user})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
     return render_to_response('news/show_news.html', {'news': news}, c)
 
 def add_news(request):
-    if "user" in request.session:    
-        c = RequestContext(request, {'user':request.session['user']})
-    else:
-        c = RequestContext(request, {})
+    c = RequestContext(request, {'user':request.user})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts

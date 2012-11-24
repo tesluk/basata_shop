@@ -2,8 +2,6 @@
 Views which allow users to create and activate accounts.
 
 """
-
-
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -11,7 +9,6 @@ from Basatashop.registration.signals import user_activated
 from django.contrib.auth import login
 from Basatashop.registration.backends import get_backend
 from django.contrib.auth.models import User
-from Basatashop.Entities.models import SUser
 from django.http import HttpResponseRedirect
 import sha
 
@@ -124,6 +121,7 @@ def register(request, backend, success_url=None, form_class=None,
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)
+
 
 def sregister(request):
     if request.method == 'POST':

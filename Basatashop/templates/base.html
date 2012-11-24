@@ -28,21 +28,21 @@
 				});
 
 			</script>
-		</head>		
+		</head>
 		<body style="background-color:#fefefe;">
 			<center>
 				<table border="0" width="800" cellpadding="0" cellspacing="0">
 					<tr>
 						<td id="logo" colspan="2" align="center" height="220"><a href="/basket"; alt="basket" title="Корзина товаров"></a></td>
 					</tr>
-					{% if user.is_authenticated %}
+					{% if user.is_active %}
 					<tr>
 						<td align="center" valign="middle" style="padding: 10px 10px;">
 						<p align="left">
 							<b> Здравcтвуйте, {{ user.first_name }} </b>
 						</p></td>
 					</tr>
-					{% endif %}					
+					{% endif %}
 					<tr>
 						<div id="container">
 							<td colspan="2" align="center" valign="middle">
@@ -66,7 +66,7 @@
 											<li>
 												<a href="/questions">Книга отзывов</a>
 											</li>
-											{% if user.is_authenticated  %}
+											{% if user.is_active  %}
 											<li>
 												<a href="/wholesale">Оптовым покупателям</a>
 											</li>
@@ -76,7 +76,7 @@
 									<li class="drop">
 										<a href="#">Кабинет</a>
 										<ul class="menu">
-											{% if user.is_authenticated  %}
+											{% if user.is_active  %}
 											<li>
 												<a href="/basket/order_state">Состояние заказов</a>
 											</li>
@@ -121,7 +121,7 @@
 											</li>
 										</ul>
 									</li>
-									{% if user.is_authenticated  %}
+									{% if user.is_active  %}
 									<li>
 										<a href="/basket/">Ваша корзина ({% if not basket %}0{% else %}{{ basket.size }}{% endif %})</a>
 									</li>

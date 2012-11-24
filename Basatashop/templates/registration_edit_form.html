@@ -3,38 +3,57 @@
 {% load static %}
 
 {% block content %}
- <h1> {% trans "Редактирование персоналых даных" %} </h1>
+<FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
+<FONT COLOR="##FF##"><h2>{{success}}</h2></FONT>
+
+ <h1> {% trans "Edit personal data" %} </h1>
  <form method="post" action="">{% csrf_token %}
  <div>
  	<table>
 		<tr> 	
-    		<th>{% trans "Username" %}</th> 
-    		<th><input type="text" name="username" value="{{username}}"/></th>
+    		<th>{% trans "Username*" %}</th> 
+    		<th><input type="text" name="username" value="{{user.login}}"/></th>
     	</tr>
     	<tr> 	
-    		<th>{% trans "Email " %}</th> 
-    		<th><input type="text" name="email" value="{{email}}"/></th>    		
+    		<th>{% trans "First name*" %}</th> 
+    		<th><input type="text" name="first_name" value="{{user.first_name}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Last name*" %}</th> 
+    		<th><input type="text" name="last_name" value="{{user.last_name}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Date of birth" %}</th> 
+    		<th><input type="date" name="birthday" value="{{user.birthday}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Country" %}</th> 
+    		<th><input type="text" name="country" value="{{user.country}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "City" %}</th> 
+    		<th><input type="text" name="city" value="{{user.city}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Street" %}</th> 
+    		<th><input type="text" name="street" value="{{user.street}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Email*" %}</th> 
+    		<th><input type="text" name="email" value="{{user.email}}"/></th>    		
     	</tr>    	
     	<tr>
-    		<th> Имя и фамилия </th>    		
-    		<th> <input type="text" name="first_sec_name" value="{{first_sec_name}}"/></th>
+    		<th> {% trans "Password*" %} </th>
+    		<th> <input type="password" name="password" value="{{user.password}}"/> </th>
     	</tr>
     	<tr>
-    		<th> Новый пароль </th>
-    		<th> <input type="password" name="new_password"/> </th>
-    	</tr>
-    	<tr>
-    		<th> Подтвердите новый пароль </th>
-    		<th> <input type="password" name="confirmed_new_password"/> </th>
-    	</tr>
-    	<tr>
-    		<th> Компания </th>
-    		<th><a href="/edit_company">редактировать</a></th>
-    	</tr>
+    		<th> {% trans "Confirm password*" %} </th>
+    		<th> <input type="password" name="confirmed_password" value="{{user.password}}"/> </th>
+    	</tr>    	
     	<tr>
     		<th> {% trans "Get spam" %} </th>    				
-    		<th><input type="checkbox" name="get_spam" checked="{{get_spam}}"/></th>    		
-    	</tr>
+    		<th><input type="checkbox" name="get_spam" checked="{{user.getSpam}}"/></th>    		
+    	</tr>    	
     </table> 
  </div> 
  <input type="submit" value="OK" / class="clearfix">

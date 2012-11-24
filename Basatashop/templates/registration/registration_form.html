@@ -3,64 +3,17 @@
 {% load static %}
 
 {% block content %}
-<FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
-
-<h1> {% trans "Registration" %} </h1>
+ <h1> {% trans "Registration" %} </h1>
  <form method="post" action="">{% csrf_token %}
  <dl class="register">
- <div>
- 	<table>
-		<tr> 	
-    		<th>{% trans "Username*" %}</th> 
-    		<th><input type="text" name="username" value="{{username}}"/></th>
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "First name*" %}</th> 
-    		<th><input type="text" name="first_name" value="{{first_name}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "Last name*" %}</th> 
-    		<th><input type="text" name="last_name" value="{{last_name}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "Date of birth" %}</th> 
-    		<th><input type="date" name="birthday" value="{{birthday}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "Country" %}</th> 
-    		<th><input type="text" name="country" value="{{country}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "City" %}</th> 
-    		<th><input type="text" name="city" value="{{city}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "Street" %}</th> 
-    		<th><input type="text" name="street" value="{{street}}"/></th>    		
-    	</tr>
-    	<tr> 	
-    		<th>{% trans "Email*" %}</th> 
-    		<th><input type="text" name="email" value="{{email}}"/></th>    		
-    	</tr>    	
-    	<tr>
-    		<th> {% trans "Password*" %} </th>
-    		<th> <input type="password" name="password" value="{{password}}"/> </th>
-    	</tr>
-    	<tr>
-    		<th> {% trans "Confirm password*" %} </th>
-    		<th> <input type="password" name="confirmed_password" value="{{confirmed_password}}"/> </th>
-    	</tr>    	
-    	<tr>
-    		<th> {% trans "Get spam" %} </th>    				
-    		<th><input type="checkbox" name="get_spam" checked="{{get_spam}}"/></th>    		
-    	</tr>
-    	<tr>
-    		<th/>
-    		<th> {% trans "* - necessary fields" %} </th>    		    		
-    	</tr>
-    </table> 
- </div> 
+ {% for field in form %}
+     <dt>{{ field.label_tag }}</dt>
+     <dd class="clearfix">{{ field }}
+     {% if field.help_text %}<div class="clearfix">{{ field.help_text }}</div>{% endif %}
+     {% if field.errors %}<div class="myerrors clearfix">{{ field.errors }}</div>{% endif %}
+     </dd>
+ {% endfor %}
  </dl>
- <input type="submit" value={% trans "Register" %} / class="clearfix"> 
+ <input type="submit" value="Зарегистрироваться" / class="clearfix"> 
  </form>
  {% endblock %}
