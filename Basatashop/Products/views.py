@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
-
+from Basatashop.Entities.models import SUser
 
 def get_all_groups (request):
     
