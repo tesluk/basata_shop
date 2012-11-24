@@ -10,7 +10,10 @@ from django.shortcuts import render_to_response
 def get_order (request):
     
     t =get_template('basket/order.html')
-    c = RequestContext(request, { })
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user']})
+    else:
+        c = RequestContext(request, { })
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -35,7 +38,10 @@ def get_ready (request):
     request.session['basket'] = None
     
     t =get_template('basket/ready.html')
-    c = RequestContext(request, {'order_id':basket.id})
+    if "user" in request.session:
+        c = RequestContext(request, {'order_id':basket.id, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'order_id':basket.id})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -76,7 +82,10 @@ def delete_char (request, ch_id):
 def get_basket(request):
     
     t = get_template('basket/basket.html')
-    c = RequestContext(request, { })
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user']})
+    else:        
+        c = RequestContext(request, { })
 
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -145,7 +154,10 @@ def order_state (request):
             baskets = Basket.objects.filter(user=user1)
         except baskets.DoesNotExist:
             return HttpResponse("Error")
-    return render_to_response('basket/order_state.html', {"baskets":  baskets},context_instance=RequestContext(request))
+    if "user" in request.session:
+        return render_to_response('basket/order_state.html', {"baskets":  baskets, 'user':request.session['user']},context_instance=RequestContext(request))
+    else:
+        return render_to_response('basket/order_state.html', {"baskets":  baskets},context_instance=RequestContext(request))
 
 def finish_order (request):
     c = {}
