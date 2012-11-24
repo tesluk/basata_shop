@@ -6,7 +6,7 @@ from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from PIL import Image
-
+import os
 
 def get_all_groups (request):
     
@@ -106,9 +106,14 @@ def add_type (request, gr_id):
     tp.name = request.POST['name']
     if 'img' in request.FILES:
         tp.picture = request.FILES['img']
+        tp.save()
+        typ = str(tp.picture).split('.') 
+        new_name = 'Entities/static/products/img_'+str(gr.id)+'_'+str(tp.id)+'.'+typ[len(typ)-1];    
+        os.rename(str(tp.picture), new_name)
+        tp.picture = new_name
     else: 
-        tp.picture = 'Entities/static/products/standart.png';    
-    tp.save()
+        tp.picture = 'Entities/static/standart.png';    
+    tp.save() 
     resize_picture(tp)    
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
 
@@ -118,8 +123,13 @@ def add_group (request):
     gr.name = request.POST['name']
     if 'img' in request.FILES:
         gr.picture = request.FILES['img']
+        gr.save()
+        typ = str(gr.picture).split('.') 
+        new_name = 'Entities/static/products/img_'+str(gr.id)+'.'+typ[len(typ)-1];    
+        os.rename(str(gr.picture), new_name)
+        gr.picture = new_name 
     else: 
-        gr.picture = 'Entities/static/products/standart.png';  
+        gr.picture = 'Entities/static/products/standart.png';        
     gr.save()
     resize_picture(gr)    
 
@@ -135,7 +145,6 @@ def add_char (request, pr_id):
     ch.product = pr
     ch.name = pr.name
     ch.save()    
-
     return HttpResponseRedirect('/products/' + str(pr.prod_type.group.id) + '/' + str(pr.prod_type.id) + '/' + str(pr.id) + '/')
 
 def add_prod (request, tp_id):   
@@ -149,13 +158,22 @@ def add_prod (request, tp_id):
     pr.description = request.POST['descr']
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
+        if 'userfile' in request.FILES:        
+            pr.model3D = request.FILES['userfile']
+            pr.save()
+            new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae';
+            os.rename(str(pr.model3D), new_name)
+            pr.model3D = new_name
+        else: 
+            pr.model3D = 'Entities/static/banana.dae';  
+        pr.save()  
+        typ = str(pr.picture).split('.') 
+        new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
+        os.rename(str(pr.picture), new_name)
+        pr.picture = new_name 
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
-    if 'userfile' in request.FILES:
-        pr.model3D = request.FILES['userfile']
-    else: 
-        pr.model3D = 'Entities/static/products/banana.dae';     
-    pr.save()       
+    pr.save()
     ch = Characteristic()
     ch.product = pr;
     ch.name = request.POST['ch1_name']
@@ -164,10 +182,8 @@ def add_prod (request, tp_id):
     resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
-def delete_prod_group (request, gr_id):
-    
-    Product_group.objects.all().get(id=gr_id).delete()
-    
+def delete_prod_group (request, gr_id):    
+    Product_group.objects.all().get(id=gr_id).delete()    
     return HttpResponseRedirect('/products/')
 
 def delete_prod_type (request, gr_id, tp_id):
