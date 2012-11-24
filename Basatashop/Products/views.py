@@ -8,12 +8,14 @@ from django.shortcuts import render_to_response
 from Basatashop.Entities.models import SUser
 from PIL import Image
 
-
 def get_all_groups (request):
     
     groups = Product_group.objects.all()
     t = get_template('products/groups_list.html')
-    c = RequestContext(request, {'prod_groups':groups})
+    if "user" in request.session:
+        c = RequestContext(request, {'prod_groups':groups, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'prod_groups':groups})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -24,7 +26,10 @@ def get_prod_group (request, gr_id):
     gr = Product_group.objects.all().get(id=gr_id)
     types = Product_type.objects.all().filter(group=gr)
     t = get_template('products/types_list.html')
-    c = RequestContext(request, {'group':gr, 'prod_types':types})
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'prod_types':types, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'prod_types':types})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -36,7 +41,10 @@ def get_prod_type (request, gr_id, tp_id):
     tp = Product_type.objects.all().get(id=tp_id)
     products = Product.objects.all().filter(prod_type=tp)
     t = get_template('products/products_list.html')
-    c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -52,7 +60,10 @@ def get_prod (request, gr_id, tp_id, pr_id):
     pr.characters = characs
     
     t = get_template('products/product_info.html')
-    c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr})
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -64,7 +75,10 @@ def get_add_prod (request, tp_id):
     tp = Product_type.objects.all().get(id=tp_id)
     gr = tp.group
     t = get_template('products/product_add.html')
-    c = RequestContext(request, {'group':gr, 'type':tp})
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'type':tp})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -74,7 +88,10 @@ def get_add_type (request, gr_id):
     
     gr = Product_group.objects.all().get(id=gr_id)
     t = get_template('products/type_add.html')
-    c = RequestContext(request, {'group':gr})
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -83,7 +100,10 @@ def get_add_type (request, gr_id):
 def get_add_group (request):
     
     t = get_template('products/group_add.html')
-    c = RequestContext(request, { })
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user'] })
+    else:
+        c = RequestContext(request, { })
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -93,7 +113,10 @@ def get_add_char (request, pr_id):
     
     t = get_template('products/charac_add.html')
     pr = Product.objects.all().get(id=pr_id)
-    c = RequestContext(request, {'product':pr})
+    if "user" in request.session:
+        c = RequestContext(request, {'product':pr, 'user':request.session['user']})
+    else:        
+        c = RequestContext(request, {'product':pr})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -192,6 +215,8 @@ def get_all_groups_xml (request):
     for gr in groups:
         gr.count = len(Product_type.objects.all().filter(group = gr))
     t = get_template('xml/groups.xml')
-    c = RequestContext(request, {'groups':groups})
-    
+    if "user" in request.session:
+        c = RequestContext(request, {'groups':groups, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'groups':groups})    
     return HttpResponse(t.render(c))
