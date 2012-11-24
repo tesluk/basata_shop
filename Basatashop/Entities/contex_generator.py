@@ -5,7 +5,9 @@ def get_base_context(request):
     
     c = RequestContext(request, {})
     
-    c.dicts.append({ 'user':request.user })
+    if "user" in request.session:
+        user = request.session['user']    
+        c.dicts.append({ 'user':user })
     
     if "basket" in request.session:
         basket = request.session['basket']
