@@ -180,4 +180,12 @@ def delete_prod (request, gr_id, tp_id, pr_id):
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
 
-
+def get_all_groups_xml (request):
+    
+    groups = Product_group.objects.all()
+    for gr in groups:
+        gr.count = len(Product_type.objects.all().filter(group = gr))
+    t = get_template('xml/groups.xml')
+    c = RequestContext(request, {'groups':groups})
+    
+    return HttpResponse(t.render(c))
