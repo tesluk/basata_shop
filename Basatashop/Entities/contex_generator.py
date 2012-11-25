@@ -2,10 +2,13 @@ from django.template.context import RequestContext
 from Basatashop.Entities.models import Product_group, Product_type, Basket
 
 def get_base_context(request):
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user']})
+        c.dicts.append({ 'user':request.session['user'] })
+    else:
+        c = RequestContext(request, {})
     
-    c = RequestContext(request, {})
     
-    c.dicts.append({ 'user':request.user })
     
     if "basket" in request.session:
         basket = request.session['basket']

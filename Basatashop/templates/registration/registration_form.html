@@ -4,16 +4,56 @@
 
 {% block content %}
  <h1> {% trans "Registration" %} </h1>
+ <FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
  <form method="post" action="">{% csrf_token %}
- <dl class="register">
- {% for field in form %}
-     <dt>{{ field.label_tag }}</dt>
-     <dd class="clearfix">{{ field }}
-     {% if field.help_text %}<div class="clearfix">{{ field.help_text }}</div>{% endif %}
-     {% if field.errors %}<div class="myerrors clearfix">{{ field.errors }}</div>{% endif %}
-     </dd>
- {% endfor %}
- </dl>
- <input type="submit" value="Зарегистрироваться" / class="clearfix"> 
+ <div>
+ 	<table>
+		<tr> 	
+    		<th>{% trans "Username*" %}</th> 
+    		<th><input type="text" name="username" value="{{user.login}}"/></th>
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "First name*" %}</th> 
+    		<th><input type="text" name="first_name" value="{{user.first_name}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Last name*" %}</th> 
+    		<th><input type="text" name="last_name" value="{{user.last_name}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Date of birth" %}</th> 
+    		<th><input type="date" name="birthday" value="{{user.birthday}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Country" %}</th> 
+    		<th><input type="text" name="country" value="{{user.country}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "City" %}</th> 
+    		<th><input type="text" name="city" value="{{user.city}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Street" %}</th> 
+    		<th><input type="text" name="street" value="{{user.street}}"/></th>    		
+    	</tr>
+    	<tr> 	
+    		<th>{% trans "Email*" %}</th> 
+    		<th><input type="text" name="email" value="{{user.email}}"/></th>    		
+    	</tr>    	
+    	<tr>
+    		<th> {% trans "Password*" %} </th>
+    		<th> <input type="password" name="password" value="{{user.password}}"/> </th>
+    	</tr>
+    	<tr>
+    		<th> {% trans "Confirm password*" %} </th>
+    		<th> <input type="password" name="confirmed_password" value="{{user.password}}"/> </th>
+    	</tr>    	
+    	<tr>
+    		<th> {% trans "Get spam" %} </th>    				
+    		<th><input type="checkbox" name="get_spam" checked="{{user.getSpam}}"/></th>    		
+    	</tr>    	
+    </table> 
+ </div> 
+ <input type="submit" value="Register" / class="clearfix">
  </form>
  {% endblock %}

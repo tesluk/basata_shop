@@ -20,7 +20,7 @@
 	</tr>
 	{% endfor %}
 </table>
-{% if not user.is_staff and user.is_active %}
+{% if not user.is_staff and user.is_authenticated %}
 <br />
 <input type="submit" value="Добавить в корзину"/>
 {% endif %}

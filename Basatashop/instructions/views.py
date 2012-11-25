@@ -6,8 +6,11 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.template.loader import get_template
 
 def all_instructions(request):
-    table = Instruction.objects.all()  
-    return render_to_response("instructions/all_instruct.html", {'table' : table}, context_instance=RequestContext(request))
+    table = Instruction.objects.all() 
+    if "user" in request.session: 
+        return render_to_response("instructions/all_instruct.html", {'table' : table, 'user':request.session['user']}, context_instance=RequestContext(request))
+    else:
+        return render_to_response("instructions/all_instruct.html", {'table' : table}, context_instance=RequestContext(request))
 
 
 def add_instruct(request):
@@ -25,7 +28,10 @@ def add_instruct(request):
 def get_add_instruct (request):
     
     t = get_template('instructions/add_new.html')
-    c = RequestContext(request, { }) 
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user']})
+    else:
+        c = RequestContext(request, { })
     return HttpResponse(t.render(c))
 
 def delete(request, _id):
@@ -42,7 +48,10 @@ def edit(request, _id):
     except ValueError:
         raise Http404()
     inst = Instruction.objects.get(id = _id)
-    return render_to_response("instructions/edit.html", {'inst' : inst}, context_instance=RequestContext(request))
+    if "user" in request.session: 
+        return render_to_response("instructions/edit.html", {'inst' : inst, 'user':request.session['user']}, context_instance=RequestContext(request))
+    else:
+        return render_to_response("instructions/edit.html", {'inst' : inst}, context_instance=RequestContext(request))
 
 def save_edited(request, _id):
     inst = Instruction.objects.get(id = _id)

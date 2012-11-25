@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 import  settings
-from Basatashop.registration.views import register_edit
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 admin.autodiscover()
@@ -71,8 +70,13 @@ urlpatterns = patterns('',
     #END BODIA 
     
     #START SEKAS
-    (r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^register/edit/$', register_edit, name='registration_edit'),
+    url(r'^accounts/register/$', 'registration.views.sregister'),
+    url(r'accounts/login/$', 'registration.views.login'),
+    url(r'accounts/logout/$', 'registration.views.logout'),
+    url(r'^register/edit/$', 'registration.views.sregister_edit'),
+    
+    #(r'^accounts/', include('registration.backends.default.urls')),
+    #url(r'^register/edit/$', register_edit, name='registration_edit'),
     #END SEKAS
      
      #START TANIA
@@ -106,5 +110,7 @@ urlpatterns = patterns('',
      
      # XML
      (r'^xml/groups/$', 'Products.views.get_all_groups_xml'),
+     (r'^xml/types/(\d{1,3})$', 'Products.views.get_types_xml'),
+     (r'^xml/products/(\d{1,3})$', 'Products.views.get_products_xml'),
      # end XML
 )

@@ -9,7 +9,10 @@ def get_quest_list (request):
     
     questions = Question.objects.all()
     t = get_template('questions/quest_list.html')
-    c = RequestContext(request, { 'questions':questions })
+    if "user" in request.session:
+        c = RequestContext(request, { 'questions':questions, 'user':request.session['user'] })
+    else:
+        c = RequestContext(request, { 'questions':questions })
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -45,7 +48,10 @@ def get_add_answer (request, q_id):
     
     question = Question.objects.all().get(id=q_id)
     t = get_template('questions/answer.html')
-    c = RequestContext(request, { 'quest':question })
+    if "user" in request.session:
+        c = RequestContext(request, { 'quest':question, 'user':request.session['user'] })
+    else:    
+        c = RequestContext(request, { 'quest':question })
     
     mc = get_base_context(request)
     c.dicts += mc.dicts

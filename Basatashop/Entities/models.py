@@ -1,4 +1,3 @@
-
 from django.db import models
 from registration.models import User
 
@@ -130,7 +129,6 @@ class Question (models.Model):
     text = models.TextField()
     adding_time = models.DateTimeField()
     answer = models.TextField(blank=True, null=True)  
-    
     
 class SUser (models.Model):
     login = models.CharField(max_length = 30)
