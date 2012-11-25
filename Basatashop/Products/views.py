@@ -212,10 +212,45 @@ def get_all_groups_xml (request):
     
     groups = Product_group.objects.all()
     for gr in groups:
-        gr.count = len(Product_type.objects.all().filter(group = gr))
+        gr.count = len(Product_type.objects.all().filter(group=gr))
     t = get_template('xml/groups.xml')
     if "user" in request.session:
         c = RequestContext(request, {'groups':groups, 'user':request.session['user']})
     else:
         c = RequestContext(request, {'groups':groups})    
+    return HttpResponse(t.render(c))
+
+
+def get_types_xml (request, gr_id):
+    
+    gr = Product_group.objects.all().get(id=gr_id)
+    
+    types = Product_type.objects.all().filter(group=gr)
+    
+    for tp in types:
+        tp.count = len(Product.objects.all().filter(prod_type=tp))
+    
+    t = get_template('xml/types.xml')
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'types':types, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'types':types})    
+    return HttpResponse(t.render(c))
+
+
+def get_products_xml (request, tp_id):
+    
+    tp = Product_type.objects.all().get(id=tp_id)
+    
+    gr = tp.group
+    
+    products = Product.objects.all().filter(prod_type=tp)
+    
+    # TODO add prices
+    
+    t = get_template('xml/products.xml')
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products , 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})    
     return HttpResponse(t.render(c))
