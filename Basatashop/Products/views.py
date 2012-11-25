@@ -184,38 +184,55 @@ def add_prod (request, tp_id):
     pr.sdescription = request.POST['sdescr']
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
-        if 'userfile' in request.FILES:        
-            pr.model= request.FILES['userfile']
-            pr.save()
-            new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae';
-            os.rename(str(pr.model), new_name)
-            pr.model = new_name
+        if 'userfile' in request.FILES:   
+            try:     
+                pr.model= request.FILES['userfile']
+                pr.save()
+                new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae';
+                os.rename(str(pr.model), new_name)
+                pr.model = new_name
+            except:
+                pr.model = 'Entities/static/products/banana.dae'; 
         else: 
             pr.model = 'Entities/static/products/banana.dae';  
-        pr.save()  
-        typ = str(pr.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
-        os.rename(str(pr.picture), new_name)
-        pr.picture = new_name 
+
+        pr.save() 
+        try:  
+            typ = str(pr.picture).split('.') 
+            new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
+            os.rename(str(pr.picture), new_name)
+            pr.picture = new_name 
+        except:
+            pr.picture = request.FILES['picture']
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
+
+    if 'userfile' in request.FILES:
+        pr.model3D = request.FILES['userfile']
+    else: 
+        pr.model3D = 'Entities/static/products/banana.dae';     
+
     pr.save()
     price = Price()
     price.value = request.POST['price']
     price.product = pr
     price.date_init = datetime.today().date()
-    price.save()
+
+    price.save()       
+
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
-    ch = Characteristic()
-    while chr_name in request.GET:        
+    while chr_name in request.POST:
+        ch = Characteristic()
         ch.product = pr;
         ch.name = request.POST[chr_name]
         ch.description = request.POST['ch'+str(i)+'_value']
         print ch.description
         ch.save()
         i=i+1
+        chr_name = 'ch'+str(i)+'_name' 
+       
     resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
@@ -288,7 +305,7 @@ def get_product_xml (request, pr_id):
     
     prod = Product.objects.all().filter(id=pr_id)
     
-    chars = Characteristic.oblects.all().filter(product = prod)
+    chars = Characteristic.objects.all().filter(product = prod)
     
     # TODO add price
     

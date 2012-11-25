@@ -17,7 +17,7 @@
 			<td>{{ order.product.name }}</td>
 			<td>{{ order.price }}</td>
 			<td>{{ order.quantity }}</td>
-			<td><input type="number" name="char{{ order.product.id }}" value="{{ order.quantity }}"/></td>
+			<td><input type="number" name="num" value="{{ order.quantity }}"/></td>
 			<td><a href="/basket/delete/{{ order.product.id }}">Удалить</a></td>
 			</tr>
 			{% endfor %}

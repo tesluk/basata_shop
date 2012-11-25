@@ -25,16 +25,16 @@
 		</tr>
 		{% endfor %}
 	</table>
+
 	{% if not user.is_staff and user.is_active%}
-	
-		<form action="/basket/add/{{ product.id }}/" method="post">
-			<table id="order_form" border="1">
-				<tr>
-					<td>Количество</td>
-					<td><input type="number" name="num{{ char.id }}" /></td>
-				</tr>
-			</table>
-		<input type="submit" value="Добавить в корзину"/>
+	<form action="/basket/add/{{ product.id }}/" method="post">
+		<table id="order_form" border="1">
+			<tr>
+				<td>Количество</td>
+				<td><input type="number" name="num" /></td>
+			</tr>
+		</table>
+	<input type="submit" value="Добавить в корзину"/>
 	{% endif %}
 		
 	{% if user.is_staff %}

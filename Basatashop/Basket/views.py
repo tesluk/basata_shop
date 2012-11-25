@@ -2,7 +2,7 @@ from django.template.loader import get_template
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.contex_generator import get_base_context
-from Basatashop.Entities.models import Basket, Product, Characteristic, Order
+from Basatashop.Entities.models import Basket, Product, Characteristic, Order, Price
 import datetime
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
@@ -52,8 +52,8 @@ def update_basket(request):
     basket = request.session['basket']
     
     for o in basket.orders:
-        num = request.POST['char' + str(o.characteristic.id)]
-        o.numb = num
+        num = request.POST['num']
+        o.quantity = num
     
     basket.summ = get_basket_summ(basket)
     basket.size = len(basket.orders)
@@ -61,23 +61,23 @@ def update_basket(request):
     
     return HttpResponseRedirect('/basket')
 
-def delete_char (request, ch_id):
-    
-    basket = request.session['basket']
-
-    neworders =[]
-
-    for o in basket.orders:
-        if str(o.characteristic.id) != str(ch_id):
-            neworders.append(o)
-
-    basket.orders = neworders
-            
-    basket.summ = get_basket_summ(basket)
-    basket.size = len(basket.orders)
-    request.session['basket'] = basket
-    
-    return HttpResponseRedirect('/basket/')
+#def delete_char (request, ch_id):
+#    
+#    basket = request.session['basket']
+#
+#    neworders =[]
+#
+#    for o in basket.orders:
+#        if str(o.characteristic.id) != str(ch_id):
+#            neworders.append(o)
+#
+#    basket.orders = neworders
+#            
+#    basket.summ = get_basket_summ(basket)
+#    basket.size = len(basket.orders)
+#    request.session['basket'] = basket
+#    
+#    return HttpResponseRedirect('/basket/')
 
 def get_basket(request):
     
@@ -101,12 +101,12 @@ def add_product (request, pr_id):
         basket = Basket()
         basket.orders = []
     
-
+    num = request.POST['num']
     if is_product_in_basket(basket, pr):
         for o in basket.orders:
-            if o.characteristic.id == char.id:
+            if o.product == pr:
                 o.quantity = int(o.quantity) + int(num)
-#                o.numb =int(o.numb) + int(num)
+
     else:
         order = Order()
         order.basket = basket
@@ -132,7 +132,7 @@ def get_basket_summ (basket):
     for o in basket.orders:
         prices = Price.objects.all().filter(product=o.product.id)
         price = prices.order_by('date_init')[0]
-        summ += float(o.quantity) * float(price)
+        summ += float(o.quantity) * price.value
     return summ
 
 #BODIA
