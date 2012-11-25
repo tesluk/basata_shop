@@ -1,11 +1,13 @@
 from django.template.loader import get_template
-from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic
+from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from PIL import Image
+import time
+from datetime import datetime, timedelta
 
 def get_all_groups (request):
     
@@ -54,15 +56,18 @@ def get_prod (request, gr_id, tp_id, pr_id):
     pr = Product.objects.all().get(id=pr_id)
     gr = Product_group.objects.all().get(id=gr_id)
     tp = Product_type.objects.all().get(id=tp_id)
-    
+    prices = Price.objects.all().filter(product=pr_id)
+    price = prices.order_by('date_init')[0]
     characs = Characteristic.objects.all().filter(product=pr)
-    pr.characters = characs
     
     t = get_template('products/product_info.html')
+    
+    c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
+    
     if "user" in request.session:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'user':request.session['user']})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price, 'user':request.session['user']})
     else:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -166,10 +171,8 @@ def add_prod (request, tp_id):
     pr = Product()
     pr.prod_type = tp
     pr.name = request.POST['name']
-    pr.price = request.POST['price']
     pr.quantity = request.POST['quantity']
     pr.sdescription = request.POST['sdescr']
-    pr.description = request.POST['descr']
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
     else: 
@@ -178,7 +181,12 @@ def add_prod (request, tp_id):
         pr.model3D = request.FILES['userfile']
     else: 
         pr.model3D = 'Entities/static/products/banana.dae';     
-    pr.save()       
+    pr.save()
+    price = Price()
+    price.value = request.POST['price']
+    price.product = pr
+    price.date_init = datetime.today().date()
+    price.save()       
     ch = Characteristic()
     ch.product = pr;
     ch.name = request.POST['ch1_name']

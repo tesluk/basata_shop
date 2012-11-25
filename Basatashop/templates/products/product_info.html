@@ -2,30 +2,43 @@
 {% load static %}
 {% block content %}
 
-<h3>{{ product.name }}</h3><br />
-<img src="/{{ product.picture_b }}" /><br /><br />
-<h4>{{ product.sdescription }}</h4><br />
-<p>{{ product.description }}</p>
-
-<br /><br />
-<form action="/basket/add/{{ product.id }}/" method="post">
-<table border="1">
-	<tr> <th>Тип</th><th>Размер</th><th>Цена</th>{% if not user.is_staff %}<th>Заказ</th>{% endif %}</tr>
-	{% for char in product.characters %}
-	<tr>
-		<td>{{ char.charac_type }}</td>
-		<td>{{ char.size }}</td>
-		<td>{{ char.prise }}</td>
-		{% if not user.is_staff %}<td><input type="text" name="num{{ char.id }}" /></td>{% endif %}
-	</tr>
-	{% endfor %}
-</table>
-{% if not user.is_staff and user.is_authenticated %}
-<br />
-<input type="submit" value="Добавить в корзину"/>
-{% endif %}
-</form>
-{% if user.is_staff %}
-<a href="/products/addchar/{{ product.id }}/">Добавить характеристику</a>
-{% endif %}
+<div id="product_info">
+	<div id="product_name_price">
+		<h2>{{ product.name }}</h2>
+		<h3>{{ price.value }} грн</h3>
+	</div>
+	<div id="product_img">
+		<img src="/{{ product.picture_b }}" />
+	</div>
+	<div id="product_descr">
+		<h4>{{ product.sdescription }}</h4>
+	</div>
+	
+	<table id="pr_characteristics">
+		<tr>
+			<td colspan="2">Основные характеристики</td>
+		</tr>
+		{% for ch in characs %}
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% if not user.is_staff and user.is_active%}
+	
+		<form action="/basket/add/{{ product.id }}/" method="post">
+			<table id="order_form" border="1">
+				<tr>
+					<td>Количество</td>
+					<td><input type="number" name="num{{ char.id }}" /></td>
+				</tr>
+			</table>
+		<input type="submit" value="Добавить в корзину"/>
+	{% endif %}
+		
+	{% if user.is_staff %}
+		<a href="/products/addchar/{{ product.id }}/">Добавить характеристику</a>
+	{% endif %}
+</div>
 {% endblock %}
