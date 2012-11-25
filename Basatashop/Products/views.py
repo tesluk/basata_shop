@@ -6,12 +6,11 @@ from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from PIL import Image
-<<<<<<< HEAD
 import os
 import time
 from datetime import datetime, timedelta
-=======
->>>>>>> af2aab2c402d635348ab3878ed481a80e3ae6e5b
+
+
 
 def get_all_groups (request):
     
@@ -193,7 +192,7 @@ def add_prod (request, tp_id):
             os.rename(str(pr.model), new_name)
             pr.model = new_name
         else: 
-            pr.model = 'Entities/static/banana.dae';  
+            pr.model = 'Entities/static/products/banana.dae';  
         pr.save()  
         typ = str(pr.picture).split('.') 
         new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
@@ -210,13 +209,16 @@ def add_prod (request, tp_id):
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
-    while chr_name in request.GET:
-        ch = Characteristic()
-        ch.product = pr;
-        ch.name = request.POST[chr_name]
-        ch.description = request.POST['ch'+str(i)+'_value']
-        ch.save()
-        i=i+1
+    while chr_name in request.POST:
+        try:
+            ch = Characteristic()
+            ch.product = pr;
+            ch.name = request.POST[chr_name]
+            ch.description = request.POST['ch'+str(i)+'_value']
+            ch.save()
+            i=i+1
+        except:
+             break        
     resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
