@@ -8,7 +8,7 @@ from django.template import RequestContext
 from Basatashop.registration.signals import user_activated
 from django.contrib.auth import login
 from Basatashop.registration.backends import get_backend
-from django.contrib.auth.models import User
+from Basatashop.Entities.models import SUser
 from django.http import HttpResponseRedirect
 import sha
 
@@ -148,7 +148,7 @@ def sregister(request):
                         cur_user.getSpam = 1
                     else:
                         cur_user.getSpam = 0
-                    cur_user.save()    
+                    cur_user.save()                      
                     return render_to_response('registration/registration_complete.html', context_instance=RequestContext(request))
             else:
                 return render_to_response('registration/registration_form.html',{'error':"Wrong confirmed password"},context_instance=RequestContext(request))
@@ -166,7 +166,7 @@ def sregister_edit(request):
                     userExist = SUser.objects.all().get(login=request.POST['username'])
                     if userExist.login == cur_user.login:                        
                         cur_user.login = request.POST['username']
-                        cur_user.first_name = request['first_name']
+                        cur_user.first_name = request.POST['first_name']
                         cur_user.last_name = request.POST['last_name']                
                         cur_user.country = request.POST['country']
                         cur_user.city = request.POST['city']
