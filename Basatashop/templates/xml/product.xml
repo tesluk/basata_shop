@@ -1,8 +1,6 @@
 {% load static %}
-<groups>
-	{% for group in groups %}
-	<group id="{{ group.id }}" name="{{ group.name }}" count="{{ group.count }}">
-		<pic>{{ group.picture_l }}</pic>
-	</group>
+<product id="{{ prod.id }}" name="{{ prod.name }}" count="{{ prod.quantity }}" desription="{{ prod.sdescription }}" pic="{{ prod.picture_l }}">
+	{% for char in chars %}
+	<char name="{{ char.name }}" value="{{ char.description }}" />
 	{% endfor %}
-</groups>
+</product>

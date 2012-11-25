@@ -1,9 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
+<script language="JavaScript">
+	function onPush() {
+		var table = document.getElementById("characters"); 
+		var i = table.rows.length;
+		var row=table.insertRow(i);
+		var cell1=row.insertCell(0);
+		var cell2=row.insertCell(1);
+		cell1.innerHTML="<input type=\"text\" id=\"ch"+i+"_name\" name=\"ch"+i+"_name\" required=\"true\"/> ";
+		cell2.innerHTML="<input type=\"text\" id=\"ch"+i+"_value\" name=\"ch"+i+"_value\" required=\"true\" />";
+	}
+</script>
 <form action="/products/newproduct/{{ type.id }}/"  name = "addprod" method="post" enctype="multipart/form-data"> {% csrf_token %}
 	Название:<input type="text" id="name" name="name" required="true" />
 	<br />
 	Краткое описание:<input type="text" id="sdescr" name="sdescr" required="true" />
+	<br />
+	Производитель:<input type="text" id="producer" name="producer" required="true" />
 	<br />
 	Изображение:<input type="file" accept="image/*" id="picture" name="picture" />
 	<br />
@@ -15,14 +28,14 @@ onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')
 	<br />
 	Цена:<input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" />
 	<br />
-	Полное описание:<textarea name="descr" cols="40" rows="5" required="true">Введите описание...</textarea>
-	<br />
-	Характеристики	
-	<br />
-	Название  Значение
-	<br />
-    <input type="text" id="ch1_name" name="ch1_name" required="true" /> : <input type="text" id="ch1_value" name="ch1_value"" required="true" />
-	<br />
-	<input type="submit" value="Готово" />
+	Характеристики	  
+	<br />	
+	<table id="characters">	
+		<th>Название</th><th>Значение</th>
+	</table>
+	<input type="button" name="Button1" value="Добавить характеристику" onclick="onPush()">
+	<br />	
+	<input type="submit" value="Готово" />	
 </form>
+
 {% endblock %}

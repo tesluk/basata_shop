@@ -1,4 +1,3 @@
-
 from django.db import models
 from registration.models import User
 
@@ -41,7 +40,7 @@ class Product (models.Model):
     picture = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_l = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_b = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
-    model = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
+    model = models.FileField(upload_to='Entities/static/products', blank=True, null=True)
     quantity = models.IntegerField()
     #instrucrion = models.ForeignKey(Instruction, blank=True, null=True)
     
@@ -50,7 +49,8 @@ class Product (models.Model):
     
 class Characteristic (models.Model):
     product = models.ForeignKey(Product)
-    description = models.TextField()
+    name = models.CharField(max_length=30, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     #charac_type = models.CharField(max_length=30, blank=True, null=True)
     #name = models.CharField(max_length=30, blank=True, null=True)
     #size = models.IntegerField()
@@ -129,7 +129,7 @@ class Question (models.Model):
     text = models.TextField()
     adding_time = models.DateTimeField()
     answer = models.TextField(blank=True, null=True)  
-        
+    
 class SUser (models.Model):
     login = models.CharField(max_length = 30)
     password = models.CharField(max_length = 50)
