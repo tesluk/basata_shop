@@ -114,7 +114,7 @@ def add_type (request, gr_id):
         os.rename(str(tp.picture), new_name)
         tp.picture = new_name
     else: 
-        tp.picture = 'Entities/static/standart.png';    
+        tp.picture = 'Entities/static/products/standart.png';    
     tp.save() 
     resize_picture(tp)    
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
@@ -181,10 +181,15 @@ def add_prod (request, tp_id):
     price.date_init = datetime.today().date()
     price.save()
     ch = Characteristic()
-    ch.product = pr;
-    ch.name = request.POST['ch1_name']
-    ch.charac_type = request.POST['ch1_value']
-    ch.save()
+    chr_name = 'ch'+str(1)+'_name' 
+    i = 1
+    while chr_name in request.GET:
+        ch = Characteristic()
+        ch.product = pr;
+        ch.name = request.POST[chr_name]
+        ch.description = request.POST['ch'+str(i)+'_value']
+        ch.save()
+        i=i+1
     resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
 
@@ -200,9 +205,9 @@ def delete_prod_type (request, gr_id, tp_id):
     return HttpResponseRedirect('/products/' + str(gr.id) + '/')
 
 def delete_prod (request, gr_id, tp_id, pr_id):
-   # tp = Product.objects.all().get(id=pr_id).group
+    #tp = Product.objects.all().get(id=pr_id).group
     Product.objects.all().get(id=pr_id).delete()    
-    return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
+    return HttpResponseRedirect('/products/' + gr_id + '/' + tp_id + '/')
 
 
 def get_all_groups_xml (request):
