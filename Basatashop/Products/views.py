@@ -6,12 +6,9 @@ from Basatashop.Entities.pic_resize import resize_picture
 from Basatashop.Entities.contex_generator import get_base_context
 from django.shortcuts import render_to_response
 from PIL import Image
-<<<<<<< HEAD
 import os
 import time
 from datetime import datetime, timedelta
-=======
->>>>>>> af2aab2c402d635348ab3878ed481a80e3ae6e5b
 
 def get_all_groups (request):
     
@@ -283,3 +280,20 @@ def get_products_xml (request, tp_id):
     else:
         c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})    
     return HttpResponse(t.render(c))
+
+
+def get_product_xml (request, pr_id):
+    
+    prod = Product.objects.all().filter(id=pr_id)
+    
+    chars = Characteristic.oblects.all().filter(product = prod)
+    
+    # TODO add price
+    
+    t = get_template('xml/product.xml')
+    if "user" in request.session:
+        c = RequestContext(request, {'product':prod, 'chars':chars, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'product':prod, 'chars':chars})    
+    return HttpResponse(t.render(c))
+
