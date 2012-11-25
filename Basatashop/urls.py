@@ -112,6 +112,5 @@ urlpatterns = patterns('',
      (r'^xml/groups/$', 'Products.views.get_all_groups_xml'),
      (r'^xml/types/(\d{1,3})$', 'Products.views.get_types_xml'),
      (r'^xml/products/(\d{1,3})$', 'Products.views.get_products_xml'),
-     (r'^xml/product/(\d{1,3})$', 'Products.views.get_product_xml'),
      # end XML
 )
