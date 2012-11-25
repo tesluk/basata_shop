@@ -1,3 +1,4 @@
+
 from django.db import models
 from registration.models import User
 
@@ -40,7 +41,7 @@ class Product (models.Model):
     picture = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_l = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
     picture_b = models.ImageField(upload_to='Entities/static/products', blank=True, null=True)
-    model = models.ImageField(upload_to='Entities/static/products', blank=True, null=True) #ìîæëèâî, òèï ïîëÿ äîâåäåòüñÿ çì³íèòè
+    model = models.FileField(upload_to='Entities/static/products', blank=True, null=True)
     quantity = models.IntegerField()
     #instrucrion = models.ForeignKey(Instruction, blank=True, null=True)
     
@@ -49,7 +50,8 @@ class Product (models.Model):
     
 class Characteristic (models.Model):
     product = models.ForeignKey(Product)
-    description = models.TextField()
+    name = models.CharField(max_length=30, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     #charac_type = models.CharField(max_length=30, blank=True, null=True)
     #name = models.CharField(max_length=30, blank=True, null=True)
     #size = models.IntegerField()
@@ -59,7 +61,7 @@ class Characteristic (models.Model):
         return self.description
     
 class Price (models.Model):
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey(Product)  
     value = models.FloatField()
     date_init = models.DateTimeField()  
     
@@ -69,7 +71,7 @@ class Price (models.Model):
 class Delivery (models.Model):
     supplier = models.CharField(max_length=30, blank=True, null=True)
     date = models.DateTimeField()
-    total = models.IntegerField()
+    total = models.FloatField()
     
 class Del_item (models.Model):
     delivery = models.ForeignKey(Delivery)
@@ -84,20 +86,19 @@ class Basket (models.Model):
                       (u'F', u'Finished'),
                       )
     user = models.ForeignKey(User) 
-    courier = models.ForeignKey(User)
     adding_time = models.DateTimeField()
     address = models.CharField(max_length=100)
     tel = models.CharField(max_length=20)
     comment = models.TextField(blank=True, null=True)
     #summ = models.FloatField()
-    total = models.FloatField()
+    total = models.FloatField() 
     btype = models.CharField(max_length=2, choices=BASKET_CHOICES) 
     
 class Order (models.Model):
     basket = models.ForeignKey(Basket)
     product = models.ForeignKey(Product)
     quantity = models.IntegerField()
-    price = models.IntegerField()
+    price = models.FloatField()
     #characteristic = models.ForeignKey(Characteristic)
     #numb = models.IntegerField()
     
@@ -128,4 +129,18 @@ class Question (models.Model):
     mail = models.EmailField()
     text = models.TextField()
     adding_time = models.DateTimeField()
-    answer = models.TextField(blank=True, null=True)    
+    answer = models.TextField(blank=True, null=True)  
+    
+    
+class SUser (models.Model):
+    login = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 20)
+    last_name = models.CharField(max_length = 20)
+    birthday = models.DateField()
+    country = models.CharField(max_length = 20)
+    city = models.CharField(max_length = 20)
+    street = models.CharField(max_length = 30)
+    email = models.EmailField(max_length = 40)    
+    getSpam = models.BooleanField()
+    is_staff = models.BooleanField()
