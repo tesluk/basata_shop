@@ -100,41 +100,39 @@ def add_product (request, pr_id):
     else:
         basket = Basket()
         basket.orders = []
-        
-    characteristics = Characteristic.objects.all().filter(product=pr)
     
-    for char in characteristics:
-        num = request.POST['num' + str(char.id)]
-        if not num:
-            num = 0
-        if is_char_in_basket(basket, char):
-            for o in basket.orders:
-                if o.characteristic.id == char.id:
-                    o.numb =int(o.numb) + int(num)
-        else:
-            order = Order()
-            order.basket = basket
-            order.characteristic = char
-            order.numb = num
-            if num != 0:
-                basket.orders.append(order)
+
+    if is_product_in_basket(basket, pr):
+        for o in basket.orders:
+            if o.characteristic.id == char.id:
+                o.quantity = int(o.quantity) + int(num)
+#                o.numb =int(o.numb) + int(num)
+    else:
+        order = Order()
+        order.basket = basket
+        order.product = pr
+        order.quantity = num
+        if num != 0:
+            basket.orders.append(order)
             
-    basket.summ = get_basket_summ(basket)
+    basket.total = get_basket_summ(basket)
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
     return HttpResponseRedirect('/basket/')
         
-def is_char_in_basket(basket, char):
+def is_product_in_basket(basket, prod):
     for ord in basket.orders:
-        if char == ord.characteristic:
+        if prod == ord.product:
             return True
     return False
 
 def get_basket_summ (basket):
     summ = 0
     for o in basket.orders:
-        summ += float(o.numb) * float(o.characteristic.prise)
+        prices = Price.objects.all().filter(product=o.product.id)
+        price = prices.order_by('date_init')[0]
+        summ += float(o.quantity) * float(price)
     return summ
 
 #BODIA

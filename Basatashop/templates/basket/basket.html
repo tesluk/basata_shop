@@ -13,12 +13,12 @@
 	<table>
 		{% for order in basket.orders %}
 		<tr>
-			<td><a href="/products/{{ order.characteristic.product.prod_type.group.id }}/{{ order.characteristic.product.prod_type.id }}/{{ order.characteristic.product.id }}/">{{ order.characteristic.name }}</a></td>
-			<td>{{ order.characteristic.char_type }}</td>
-			<td>{{ order.characteristic.size }}</td>
-			<td>{{ order.characteristic.prise }}</td>
-			<td><input type="number" name="char{{ order.characteristic.id }}" value="{{ order.numb }}"/></td>
-			<td><a href="/basket/delete/{{ order.characteristic.id }}">Удалить</a></td>
+			<td><a href="/products/{{ order.product.prod_type.group.id }}/{{ order.product.prod_type.id }}/{{ order.product.id }}/">{{ order.product.name }}</a></td>
+			<td>{{ order.product.name }}</td>
+			<td>{{ order.price }}</td>
+			<td>{{ order.quantity }}</td>
+			<td><input type="number" name="char{{ order.product.id }}" value="{{ order.quantity }}"/></td>
+			<td><a href="/basket/delete/{{ order.product.id }}">Удалить</a></td>
 			</tr>
 			{% endfor %}
 			</table>

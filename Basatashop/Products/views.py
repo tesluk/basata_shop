@@ -63,8 +63,6 @@ def get_prod (request, gr_id, tp_id, pr_id):
     
     t = get_template('products/product_info.html')
     
-    c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
-    
     if "user" in request.session:
         c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price, 'user':request.session['user']})
     else:
@@ -193,7 +191,7 @@ def add_prod (request, tp_id):
             os.rename(str(pr.model), new_name)
             pr.model = new_name
         else: 
-            pr.model = 'Entities/static/banana.dae';  
+            pr.model = 'Entities/static/products/banana.dae';  
         pr.save()  
         typ = str(pr.picture).split('.') 
         new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
@@ -201,31 +199,21 @@ def add_prod (request, tp_id):
         pr.picture = new_name 
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
-<<<<<<< HEAD
-    if 'userfile' in request.FILES:
-        pr.model3D = request.FILES['userfile']
-    else: 
-        pr.model3D = 'Entities/static/products/banana.dae';     
-=======
->>>>>>> a1f685f81bfe56c4e2ca4dbcc2be5a312d5233b8
     pr.save()
     price = Price()
     price.value = request.POST['price']
     price.product = pr
     price.date_init = datetime.today().date()
-<<<<<<< HEAD
-    price.save()       
-=======
     price.save()
->>>>>>> a1f685f81bfe56c4e2ca4dbcc2be5a312d5233b8
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
-    while chr_name in request.GET:
-        ch = Characteristic()
+    ch = Characteristic()
+    while chr_name in request.GET:        
         ch.product = pr;
         ch.name = request.POST[chr_name]
         ch.description = request.POST['ch'+str(i)+'_value']
+        print ch.description
         ch.save()
         i=i+1
     resize_picture(pr)           
