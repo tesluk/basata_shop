@@ -1,0 +1,43 @@
+#product_info {
+	
+}
+
+#product_name_price {
+	float: left;
+}
+#product_name_price h2 {
+	color:#777777;
+	size: 2pt;
+	padding: 20px 10px 10px 10px;
+}
+
+#product_name_price h3 {
+	color:#f00760;
+	size: 1.5pt;
+}
+
+#product_img {
+	clear: both;
+}
+
+#product_img img {
+	padding-top: 20px;
+}
+
+#product_descr {
+	float: left;
+	clear: both;
+}
+
+#product_descr h4 {
+	size: 1pt;
+	padding: 20px 0 0 10px;
+}
+
+#pr_characteristics {
+	
+}
+
+#order_form {
+	
+}

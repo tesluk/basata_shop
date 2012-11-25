@@ -9,8 +9,11 @@ from PIL import Image
 import os
 import time
 from datetime import datetime, timedelta
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> a4435ce72f10f58106d9eb8f79fde789bb64cbff
 
 def get_all_groups (request):
     
@@ -59,15 +62,18 @@ def get_prod (request, gr_id, tp_id, pr_id):
     pr = Product.objects.all().get(id=pr_id)
     gr = Product_group.objects.all().get(id=gr_id)
     tp = Product_type.objects.all().get(id=tp_id)
-    
+    prices = Price.objects.all().filter(product=pr_id)
+    price = prices.order_by('date_init')[0]
     characs = Characteristic.objects.all().filter(product=pr)
-    pr.characters = characs
     
     t = get_template('products/product_info.html')
+    
+    c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
+    
     if "user" in request.session:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'user':request.session['user']})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price, 'user':request.session['user']})
     else:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -200,12 +206,20 @@ def add_prod (request, tp_id):
         pr.picture = new_name 
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
+
+    if 'userfile' in request.FILES:
+        pr.model3D = request.FILES['userfile']
+    else: 
+        pr.model3D = 'Entities/static/products/banana.dae';     
+
     pr.save()
     price = Price()
     price.value = request.POST['price']
     price.product = pr
     price.date_init = datetime.today().date()
-    price.save()
+
+    price.save()       
+
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
@@ -285,3 +299,20 @@ def get_products_xml (request, tp_id):
     else:
         c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})    
     return HttpResponse(t.render(c))
+
+
+def get_product_xml (request, pr_id):
+    
+    prod = Product.objects.all().filter(id=pr_id)
+    
+    chars = Characteristic.objects.all().filter(product = prod)
+    
+    # TODO add price
+    
+    t = get_template('xml/product.xml')
+    if "user" in request.session:
+        c = RequestContext(request, {'product':prod, 'chars':chars, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'product':prod, 'chars':chars})    
+    return HttpResponse(t.render(c))
+
