@@ -286,7 +286,7 @@ def get_product_xml (request, pr_id):
     
     prod = Product.objects.all().filter(id=pr_id)
     
-    chars = Characteristic.oblects.all().filter(product = prod)
+    chars = Characteristic.objects.all().filter(product = prod)
     
     # TODO add price
     
