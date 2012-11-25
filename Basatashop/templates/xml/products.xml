@@ -1,14 +1,8 @@
 {% load static %}
-<products group_id="{{  }}" group_name="{{  }}" type_id="{{  }}" type_name="{{  }}">
-	<product id="{{  }}" name="{{  }}" price="{{  }}">
-		<pic>{{  }}</pic>
+<products group_id="{{ group.id }}" group_name="{{ group.name }}" type_id="{{ type.id }}" type_name="{{ type.name }}">
+	{% for prod in products %}
+	<product id="{{ prod.id }}" name="{{ prod.name }}" price="{{ prod.price }}">
+		<pic>{{ prod.picture_l }}</pic>
 	</product>	
-</products>
-
-<groups>
-	{% for group in groups %}
-	<group id="{{ group.id }}" name="{{ group.name }}" count="{{ group.count }}">
-		<pic>{{ group.picture_l }}</pic>
-	</group>
 	{% endfor %}
-</groups>
+</products>
