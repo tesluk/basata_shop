@@ -201,23 +201,20 @@ def add_prod (request, tp_id):
         pr.picture = new_name 
     else: 
         pr.picture = 'Entities/static/products/standart.png';    
-<<<<<<< HEAD
+
     if 'userfile' in request.FILES:
         pr.model3D = request.FILES['userfile']
     else: 
         pr.model3D = 'Entities/static/products/banana.dae';     
-=======
->>>>>>> a1f685f81bfe56c4e2ca4dbcc2be5a312d5233b8
+
     pr.save()
     price = Price()
     price.value = request.POST['price']
     price.product = pr
     price.date_init = datetime.today().date()
-<<<<<<< HEAD
+
     price.save()       
-=======
-    price.save()
->>>>>>> a1f685f81bfe56c4e2ca4dbcc2be5a312d5233b8
+
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
