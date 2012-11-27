@@ -10,8 +10,23 @@ import os
 import time
 from datetime import datetime, timedelta
 
-def get_all_groups (request):
+def get_last_price(pr_id):
+    prices = Price.objects.all().filter(product=pr_id)
+    price = prices.order_by('date_init')[len(list(prices))-1]
+    return price
+
+def add_picture(obj, new_name, typ):
+    for i in range(2):
+        try:
+            os.rename(str(obj.picture), new_name)
+            obj.picture = new_name
+            break
+        except:
+            os.remove(new_name+typ)
+            os.remove(new_name+'_l'+typ)
+            os.remove(new_name+'_b'+typ)
     
+def get_all_groups (request):    
     groups = Product_group.objects.all()
     t = get_template('products/groups_list.html')
     if "user" in request.session:
@@ -23,8 +38,7 @@ def get_all_groups (request):
     c.dicts += mc.dicts
     return HttpResponse(t.render(c))
 
-def get_prod_group (request, gr_id):
-    
+def get_prod_group (request, gr_id):    
     gr = Product_group.objects.all().get(id=gr_id)
     types = Product_type.objects.all().filter(group=gr)
     t = get_template('products/types_list.html')
@@ -37,8 +51,7 @@ def get_prod_group (request, gr_id):
     c.dicts += mc.dicts
     return HttpResponse(t.render(c))
 
-def get_prod_type (request, gr_id, tp_id):
-    
+def get_prod_type (request, gr_id, tp_id):    
     gr = Product_group.objects.all().get(id=gr_id)
     tp = Product_type.objects.all().get(id=tp_id)
     products = Product.objects.all().filter(prod_type=tp)
@@ -57,10 +70,8 @@ def get_prod (request, gr_id, tp_id, pr_id):
     pr = Product.objects.all().get(id=pr_id)
     gr = Product_group.objects.all().get(id=gr_id)
     tp = Product_type.objects.all().get(id=tp_id)
-    prices = Price.objects.all().filter(product=pr_id)
-    price = prices.order_by('date_init')[0]
+    price = get_last_price(pr_id)
     characs = Characteristic.objects.all().filter(product=pr)
-    
     t = get_template('products/product_info.html')
     
     if "user" in request.session:
@@ -74,7 +85,6 @@ def get_prod (request, gr_id, tp_id, pr_id):
 
 
 def get_add_prod (request, tp_id):
-    
     tp = Product_type.objects.all().get(id=tp_id)
     gr = tp.group
     t = get_template('products/product_add.html')
@@ -112,14 +122,15 @@ def get_add_group (request):
     c.dicts += mc.dicts
     return HttpResponse(t.render(c))
 
-def get_add_char (request, pr_id):
-    
+def get_add_char (request, pr_id):    
     t = get_template('products/charac_add.html')
     pr = Product.objects.all().get(id=pr_id)
+    price = get_last_price(pr_id).value
+    charac = Characteristic.objects.all().filter(product=pr_id)
     if "user" in request.session:
-        c = RequestContext(request, {'product':pr, 'user':request.session['user']})
+        c = RequestContext(request, {'product':pr, 'characs':charac, 'price' : str(price),'user':request.session['user']})
     else:        
-        c = RequestContext(request, {'product':pr})
+        c = RequestContext(request, {'product':pr, 'characs':charac, 'price' : str(price)})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
@@ -135,9 +146,9 @@ def add_type (request, gr_id):
         tp.picture = request.FILES['img']
         tp.save()
         typ = str(tp.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(gr.id)+'_'+str(tp.id)+'.'+typ[len(typ)-1];    
-        os.rename(str(tp.picture), new_name)
-        tp.picture = new_name
+        new_name = 'Entities/static/products/img_'+str(gr.id)+'_'+str(tp.id); 
+        t = '.'+typ[len(typ)-1] 
+        add_picture(tp, new_name, t)        
     else: 
         tp.picture = 'Entities/static/products/standart.png';    
     tp.save() 
@@ -152,29 +163,63 @@ def add_group (request):
         gr.picture = request.FILES['img']
         gr.save()
         typ = str(gr.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(gr.id)+'.'+typ[len(typ)-1];    
-        os.rename(str(gr.picture), new_name)
-        gr.picture = new_name 
+        new_name = 'Entities/static/products/img_'+str(gr.id)
+        t = '.'+typ[len(typ)-1] 
+        add_picture(tp, new_name, t)      
     else: 
         gr.picture = 'Entities/static/products/standart.png';        
     gr.save()
-    resize_picture(gr)    
-
+    resize_picture(gr)  
     return HttpResponseRedirect('/products/')
 
-def add_char (request, pr_id):
-    
+def add_char (request, pr_id):    
     pr = Product.objects.all().get(id=pr_id)
+    pr.name = request.POST['name']
+    pr.producer = request.POST['producer']
+    pr.quantity = request.POST['quantity']
+    pr.sdescription = request.POST['sdescr'] 
+    if 'picture' in request.FILES:
+        pr.picture = request.FILES['picture']
+        pr.save()
+        typ = str(pr.picture).split('.') 
+        pt = Product_type.objects.all().get(id=pr.prod_type.id)
+        new_name = 'Entities/static/products/img_'+str(pt.group.id)+'_'+str(pt.id)+'_'+str(pr.id)    
+        t = '.'+typ[len(typ)-1] 
+        add_picture(pr, new_name,t)
+    if 'userfile' in request.FILES:       
+        pr.model= request.FILES['userfile']
+        pr.save()
+        new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae'
+        for i in range(2):
+            try:
+                os.rename(str(pr.model), new_name)
+                pr.model = new_name
+                break
+            except:
+                os.remove(new_name)  
+    pr.save() 
+    resize_picture(pr) 
+    price = Price()
+    price.value = request.POST['price']
+    price.product = pr
+    price.date_init = datetime.today().date()
+    price.save()
+    Characteristic.objects.filter(product = pr).delete()
     ch = Characteristic()
-    ch.size = request.POST['size']
-    ch.charac_type = request.POST['char_type'] 
-    ch.prise = request.POST['price']
-    ch.product = pr
-    ch.name = pr.name
-    ch.save()    
+    chr_name = str(1) 
+    i = 1
+    while chr_name in request.POST:
+        ch = Characteristic()
+        ch.product = pr;
+        ch.name = request.POST[chr_name]
+        ch.description = request.POST[str(i+10)]
+        ch.save()
+        i=i+1
+        chr_name = str(i)    
     return HttpResponseRedirect('/products/' + str(pr.prod_type.group.id) + '/' + str(pr.prod_type.id) + '/' + str(pr.id) + '/')
-
-def add_prod (request, tp_id):   
+          
+    
+def add_prod (request, tp_id): 
     tp = Product_type.objects.all().get(id=tp_id)
     pr = Product()
     pr.prod_type = tp
@@ -184,42 +229,35 @@ def add_prod (request, tp_id):
     pr.sdescription = request.POST['sdescr']
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
-        if 'userfile' in request.FILES:   
-            try:     
-                pr.model= request.FILES['userfile']
-                pr.save()
-                new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae';
-                os.rename(str(pr.model), new_name)
-                pr.model = new_name
-            except:
-                pr.model = 'Entities/static/products/banana.dae'; 
+        if 'userfile' in request.FILES:
+            pr.model= request.FILES['userfile']
+            pr.save()
+            new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae'
+            for i in range(2):   
+                try:                    
+                    os.rename(str(pr.model), new_name)
+                    pr.model = new_name
+                    break;
+                except:
+                    os.remove(new_name) 
         else: 
             pr.model = 'Entities/static/products/banana.dae';  
 
         pr.save() 
-        try:  
-            typ = str(pr.picture).split('.') 
-            new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.'+typ[len(typ)-1];
-            os.rename(str(pr.picture), new_name)
-            pr.picture = new_name 
-        except:
-            pr.picture = request.FILES['picture']
+        typ = str(pr.picture).split('.') 
+        new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)
+        t = '.'+typ[len(typ)-1] 
+        add_picture(tp, new_name, t) 
+        add_picture(pr, new_name, t)
     else: 
-        pr.picture = 'Entities/static/products/standart.png';    
-
-    if 'userfile' in request.FILES:
-        pr.model3D = request.FILES['userfile']
-    else: 
-        pr.model3D = 'Entities/static/products/banana.dae';     
-
+        pr.picture = 'Entities/static/products/standart.png';  
+  
     pr.save()
     price = Price()
     price.value = request.POST['price']
     price.product = pr
     price.date_init = datetime.today().date()
-
     price.save()       
-
     ch = Characteristic()
     chr_name = 'ch'+str(1)+'_name' 
     i = 1
@@ -228,13 +266,12 @@ def add_prod (request, tp_id):
         ch.product = pr;
         ch.name = request.POST[chr_name]
         ch.description = request.POST['ch'+str(i)+'_value']
-        print ch.description
         ch.save()
         i=i+1
         chr_name = 'ch'+str(i)+'_name' 
        
     resize_picture(pr)           
-    return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')
+    return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')  
 
 def delete_prod_group (request, gr_id):    
     Product_group.objects.all().get(id=gr_id).delete()    
