@@ -3,8 +3,8 @@
 <script language="JavaScript">
 	function onPush() {
 		var table = document.getElementById("characters"); 
-		var i = table.rows.length;
-		var row=table.insertRow(i);
+		var i = table.rows.length-1;
+		var row=table.insertRow(i+1);
 		var cell1=row.insertCell(0);
 		var cell2=row.insertCell(1);
 		cell1.innerHTML="<input type=\"text\" id ="+i+" name = \""+i+"\" />";
