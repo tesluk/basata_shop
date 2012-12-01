@@ -3,6 +3,6 @@
 		<td><a href="/products/{{ group.id }}/" /><img src="/{{ group.picture_l }}" /></a></td>
 		<td><a href="/products/{{ group.id }}/" /><h3> {{ group.name }} </h3></a></td>
 		
-		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/" />Удалить</a></td>
+		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/"  class="m-btn mini"><i class="icon-trash"></i>Удалить</a></td>
 		{% endif %}
 	</tr>

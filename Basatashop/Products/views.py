@@ -12,7 +12,10 @@ from datetime import datetime, timedelta
 
 def get_last_price(pr_id):
     prices = Price.objects.all().filter(product=pr_id)
-    price = prices.order_by('date_init')[len(list(prices))-1]
+    if len(list(prices)) == 0:
+        price = 0
+    else:
+        price = prices.order_by('date_init')[len(list(prices))-1]
     return price
 
 def add_picture(obj, new_name, typ):
@@ -55,6 +58,8 @@ def get_prod_type (request, gr_id, tp_id):
     gr = Product_group.objects.all().get(id=gr_id)
     tp = Product_type.objects.all().get(id=tp_id)
     products = Product.objects.all().filter(prod_type=tp)
+    for product in products:
+        product.price = get_last_price(product.id)
     t = get_template('products/products_list.html')
     if "user" in request.session:
         c = RequestContext(request, {'group':gr, 'type':tp, 'products':products, 'user':request.session['user']})
@@ -247,7 +252,6 @@ def add_prod (request, tp_id):
         typ = str(pr.picture).split('.') 
         new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)
         t = '.'+typ[len(typ)-1] 
-        add_picture(tp, new_name, t) 
         add_picture(pr, new_name, t)
     else: 
         pr.picture = 'Entities/static/products/standart.png';  

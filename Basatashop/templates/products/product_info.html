@@ -16,7 +16,7 @@
 	
 	<table id="pr_characteristics">
 		<tr>
-			<td colspan="2">Основные характеристики</td>
+			<td colspan="2"><h2>Основные характеристики</h2></td>
 		</tr>
 		{% for ch in characs %}
 		<tr>
@@ -24,21 +24,26 @@
 			<td>{{ ch.description }}</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td>Производитель</td>
+			<td>{{ product.producer }}</td>
+		</tr>
 	</table>
 
-	{% if not user.is_staff and user.is_active%}
+<!--	{% if not user.is_staff and user.is_active%} -->
+	{% if user.is_staff %}
 	<form action="/basket/add/{{ product.id }}/" method="post">
-		<table id="order_form" border="1">
+		<table id="order_form" border="0">
 			<tr>
 				<td>Количество</td>
 				<td><input type="number" name="num" /></td>
 			</tr>
 		</table>
-	<input type="submit" value="Добавить в корзину"/>
+	<input type="submit" value="Добавить в корзину" class="m-btn"/>
 	{% endif %}
 		
 	{% if user.is_staff %}
-		<a class="m-btn" href="/products/addchar/{{ product.id }}/"><i class="icon-plus"></i>Добавить характеристику</a>
+		<a class="m-btn" href="/products/addchar/{{ product.id }}/">Редактировать</a>
 	{% endif %}
 </div>
 {% endblock %}

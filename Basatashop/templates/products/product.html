@@ -1,8 +1,14 @@
-<table>
+<table id="prod_in_list">
 	<tr>
-		<td><a href="/products/{{ group.id }}/{{ type.id }}/{{ product.id }}/" /><img src="/{{ product.picture_l }}" /></a></td>
-		<td><a href="/products/{{ group.id }}/{{ type.id }}/{{ product.id }}/" /><h3> {{ product.name }}</h3></a></td>
-		<td> {{ product.sdescription }} </td>
-		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/{{ type.id }}/{{ product.id }}/" />Удалить</a></td>{% endif %}
+		<td width="200px" align="absmiddle"><a href="/products/{{ group.id }}/{{ type.id }}/{{ product.id }}/" /><img src="/{{ product.picture_l }}" /></a></td>
+		<td width="200px" align="absmiddle">
+			<a href="/products/{{ group.id }}/{{ type.id }}/{{ product.id }}/" /><h3> {{ product.name }}</h3></a>
+			<br/>
+			{% if product.price.value %} 
+			<p>{{ product.price.value }} грн</p>
+			{% endif %}
+		</td>
+		<!--<td> {{ product.sdescription }} </td>-->
+		{% if user.is_staff %} <td width="200px" align="absmiddle"><a href="/products/delete/{{ group.id }}/{{ type.id }}/{{ product.id }}/" />Удалить</a></td>{% endif %}
 	</tr>
 </table>
