@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+<fieldset>
+<legend>{{ type }}</legend>
 <table>
 	{% for product in products %}
 	<tr>
@@ -9,6 +11,8 @@
 	{% endfor %}
 </table>
 <br />
-{% if user.is_staff %} <a href="/products/addproduct/{{ type.id }}/">Добавить товар</a>
+{% if user.is_staff %} <a href="/products/addproduct/{{ type.id }}/" class="m-btn"><i class="icon-plus"></i>Добавить товар</a>
+<br/>
+</fieldset>
 {% endif %}
 {% endblock %}

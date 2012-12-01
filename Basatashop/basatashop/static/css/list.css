@@ -1,0 +1,21 @@
+p {
+	font-family:Arial, Helvetica, Sans-Serif; 
+	font-size:1.5em;
+	color: #B22222;
+}
+legend {
+background: #fff;
+font-family:Arial, Helvetica, Sans-Serif; 
+font-size:2em;
+}
+fieldset {
+	border: 3px solid #fef;
+	border-radius: 30px;
+	border-style: groove;
+}
+
+#prod_in_list{
+	border-bottom: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #bbb;
+}

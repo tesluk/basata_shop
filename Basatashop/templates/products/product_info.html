@@ -7,16 +7,29 @@
 		<h2>{{ product.name }}</h2>
 		<h3>{{ price.value }} грн</h3>
 	</div>
+	{% if user.is_staff %}
+	<div id="order_form">
+		<form action="/basket/add/{{ product.id }}/" method="post">
+			<table border="0">
+				<tr>
+					<td>Количество</td>
+					<td><input type="number" name="num" size="3"/></td>
+				</tr>
+			</table>
+		<input type="submit" value="Добавить в корзину" class="m-btn mini"/>
+		</form>
+	</div>
+	{% endif %}
 	<div id="product_img">
 		<img src="/{{ product.picture_b }}" />
 	</div>
 	<div id="product_descr">
 		<h4>{{ product.sdescription }}</h4>
 	</div>
-	
+	<br />
 	<table id="pr_characteristics">
 		<tr>
-			<td colspan="2">Основные характеристики</td>
+			<td colspan="2"><h2>Основные характеристики</h2></td>
 		</tr>
 		{% for ch in characs %}
 		<tr>
@@ -24,21 +37,19 @@
 			<td>{{ ch.description }}</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td>Производитель</td>
+			<td>{{ product.producer }}</td>
+		</tr>
 	</table>
-
-	{% if not user.is_staff and user.is_active%}
-	<form action="/basket/add/{{ product.id }}/" method="post">
-		<table id="order_form" border="1">
-			<tr>
-				<td>Количество</td>
-				<td><input type="number" name="num" /></td>
-			</tr>
-		</table>
-	<input type="submit" value="Добавить в корзину"/>
-	{% endif %}
+	<br />
+<!--	{% if not user.is_staff and user.is_active%} 
+{% endif %}-->
 		
 	{% if user.is_staff %}
-		<a class="m-btn" href="/products/addchar/{{ product.id }}/"><i class="icon-plus"></i>Добавить характеристику</a>
+		<div id="edit_prod">
+			<a class="m-btn" href="/products/addchar/{{ product.id }}/">Редактировать</a>
+		</div>
 	{% endif %}
-</div>
+	</div>
 {% endblock %}

@@ -35,7 +35,7 @@ def delete_zeros (basket):
     neworders = []
     
     for o in basket.orders:
-        if int(o.numb) != 0:
+        if int(o.quantity) != 0:
             neworders.append(o)
     
     basket.orders = neworders

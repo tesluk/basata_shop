@@ -6,14 +6,15 @@
 	float: left;
 }
 #product_name_price h2 {
-	color:#777777;
-	size: 2pt;
+	color:#333;
+	font-family:Arial, Helvetica, Sans-Serif; 
+	font-size:2em;
 	padding: 20px 10px 10px 10px;
 }
 
 #product_name_price h3 {
-	color:#f00760;
-	size: 1.5pt;
+	color:#CD2626;
+	font-size:1.5em;
 }
 
 #product_img {
@@ -35,9 +36,43 @@
 }
 
 #pr_characteristics {
-	
+	float: left;
+	margin: 20px 20px;
+	width: 60%;
+	clear: both;
+}
+
+#pr_characteristics tr {
+	height: 20px;
 }
 
 #order_form {
+	float: right;
+	margin: 20px 20px;
+	border: 2px solid #B22222;
+	border-radius: 20px;
+	padding: 10px 10px;
+	background-color: #f9f9f9;
+	width: 180px;
+	height: 50px;
+}
+
+#order_form input {
+	height: 20px;
+	width: 40px;
+}
+
+#order_form input.m-btn {
+	height: 30px;
+	width: 150px;
+	border: 2px solid #B22222;
+	border-radius: 20px;
+	
+}
+
+#edit_prod {
+	width:100%;
+	bottom: 10px;
+	clear: both;
 	
 }
