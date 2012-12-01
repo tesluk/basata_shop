@@ -1,7 +1,7 @@
 {% load static %}
 	<tr>
-		<td><a href="/products/{{ group.id }}/" /><img src="/{{ group.picture_l }}" /></a></td>
-		<td><a href="/products/{{ group.id }}/" /><h3> {{ group.name }} </h3></a></td>
+		<td><a href="/products/{{ group.id }}/" class="groups"/><img src="/{{ group.picture_l }}" /></a></td>
+		<td><a href="/products/{{ group.id }}/" class="groups" />{{ group.name }}</a></td>
 		
 		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/" />Удалить</a></td>
 		{% endif %}

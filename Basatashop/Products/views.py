@@ -165,7 +165,7 @@ def add_group (request):
         typ = str(gr.picture).split('.') 
         new_name = 'Entities/static/products/img_'+str(gr.id)
         t = '.'+typ[len(typ)-1] 
-        add_picture(tp, new_name, t)      
+        add_picture(gr, new_name, t)      
     else: 
         gr.picture = 'Entities/static/products/standart.png';        
     gr.save()
