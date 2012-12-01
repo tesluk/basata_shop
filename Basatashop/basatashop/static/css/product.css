@@ -1,0 +1,23 @@
+#product{
+	color:#666666;
+	font-family: Tahoma, sans-serif;
+	font-weight: bold;
+	size: 4pt;	
+}
+
+a.groups:link, a:active {
+	color:#666;
+	font-weight:bold;
+	text-decoration : none
+	}
+a.groups:visited {
+	color:#CC6666;
+	font-weight:bold;
+	text-decoration : none
+	}
+a.groups:hover {
+	color: #fff; 
+    background: #999999; 
+	font-weight:bold;
+	text-decoration : none
+	}
