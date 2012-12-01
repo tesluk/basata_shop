@@ -12,22 +12,31 @@
 	}
 </script>
 <form action="/products/newchar/{{ product.id }}/" method="post"   enctype="multipart/form-data"> {% csrf_token %}
-	Название:<input type="text" id="name" name="name" required="true"  value="{{product.name}}"/>
-	<br />
-	Краткое описание:<input type="text" size="60" id="sdescr" name="sdescr" required="true" value="{{product.sdescription}}"/>
-	<br />
-	Производитель:<input type="text" id="producer" name="producer" required="true" value="{{product.producer}}"/>
-	<br />
-	Изображение:<input type="file" accept="image/*" id="picture" name="picture"/>
-	<br />
-	3D модель: <input name="userfile" type="file" id="model" value="product.model" name="model"
+	<table>
+	<tr>
+	<td>Название:</td><td><input type="text" id="name" name="name" required="true"  value="{{product.name}}"/></td>
+	</tr>
+	<tr>
+	<td>Краткое описание:</td><td><input type="text" size="60" id="sdescr" name="sdescr" required="true" value="{{product.sdescription}}"/></td>
+	</tr>
+	<tr>
+	<td>Производитель:</td><td><input type="text" id="producer" name="producer" required="true" value="{{product.producer}}"/></td>
+	</tr>
+	<tr>
+	<td>Изображение:</td><td><input type="file" accept="image/*" id="picture" name="picture"/></td>
+	</tr>
+	<tr>
+	<td>3D модель:</td><td><input name="userfile" type="file" id="model" value="product.model" name="model"
 onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')+1,userfile.value.length).toLowerCase()!='dae') 
-{alert('Необходимо выбрать DAE файл для загрузки!'); userfile.value= null; return;};">
-    <br/>
-	Количество:<input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" value="{{product.quantity}}"/>
-	<br />
-	Цена:<input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" value="{{price}}"/>
-	<br />	
+{alert('Необходимо выбрать DAE файл для загрузки!'); userfile.value= null; return;};"></td>
+    </tr>
+	<tr>
+	<td>Количество:</td><td><input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" value="{{product.quantity}}"/></td>
+	</tr>
+	<tr>
+	<td>Цена:</td><td><input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" value="{{price}}"/><td>
+	</tr>
+	</table>
 	<table id="characters">
 		<tr>
 			<td colspan="2">Основные характеристики</td>			
@@ -40,7 +49,7 @@ onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')
 			</tr>
 		{% endfor %}
 	</table>
-	<input type="button" name="Button1" value="Добавить характеристику" onclick="onPush()">
+	<input type="button" name="Button1" value="Добавить характеристику" class="m-btn red rnd" onclick="onPush()">
 	<br />	
 	<input type="submit" value="Готово" />	
 </form>
