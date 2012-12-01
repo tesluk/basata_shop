@@ -3,45 +3,65 @@
 <script language="JavaScript">
 	function onPush() {
 		var table = document.getElementById("characters"); 
-		var i = table.rows.length-1;
+		var i = table.rows.length-2;
 		var row=table.insertRow(i+1);
 		var cell1=row.insertCell(0);
 		var cell2=row.insertCell(1);
 		cell1.innerHTML="<input type=\"text\" id ="+i+" name = \""+i+"\" />";
-		cell2.innerHTML="<input type=\"text\" id= "+(i+10)+" name=\""+(i+10)+"\" />";
+		cell2.innerHTML="<input type=\"text\" id= "+(i+100)+" name=\""+(i+100)+"\" />";
 	}
 </script>
 <form action="/products/newchar/{{ product.id }}/" method="post"   enctype="multipart/form-data"> {% csrf_token %}
-	Название:<input type="text" id="name" name="name" required="true"  value="{{product.name}}"/>
-	<br />
-	Краткое описание:<input type="text" size="60" id="sdescr" name="sdescr" required="true" value="{{product.sdescription}}"/>
-	<br />
-	Производитель:<input type="text" id="producer" name="producer" required="true" value="{{product.producer}}"/>
-	<br />
-	Изображение:<input type="file" accept="image/*" id="picture" name="picture"/>
-	<br />
-	3D модель: <input name="userfile" type="file" id="model" value="product.model" name="model"
-onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')+1,userfile.value.length).toLowerCase()!='dae') 
-{alert('Необходимо выбрать DAE файл для загрузки!'); userfile.value= null; return;};">
-    <br/>
-	Количество:<input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" value="{{product.quantity}}"/>
-	<br />
-	Цена:<input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" value="{{price}}"/>
-	<br />	
-	<table id="characters">
+	<table>
 		<tr>
-			<td colspan="2">Основные характеристики</td>			
+			<td>
+			<table align="left" >
+			<tr>
+			<td>Название:</td><td><input type="text" id="name" name="name" required="true"  value="{{product.name}}"/></td>
+			</tr>
+			<tr>
+			<td>Описание:</td><td><input type="text" size="50" id="sdescr" name="sdescr" required="true" value="{{product.sdescription}}"/></td>
+			</tr>
+			<tr>
+			<td>Производитель:</td><td><input type="text" id="producer" name="producer" required="true" value="{{product.producer}}"/></td>
+			</tr>
+			<tr>
+			<td>Изображение:</td><td><input type="file" accept="image/*" id="picture" name="picture"/></td>
+			</tr>
+			<tr>
+			<td>3D модель:</td><td><input name="userfile" type="file" id="model" value="product.model" name="model"
+		onChange="javascript:if(userfile.value.substring(userfile.value.lastIndexOf('.')+1,userfile.value.length).toLowerCase()!='dae') 
+		{alert('Необходимо выбрать DAE файл для загрузки!'); userfile.value= null; return;};"></td>
+		    </tr>
+			<tr>
+			<td>Количество:</td><td><input type ="text" pattern="[0-9]{1,5}" id="quantity" name="quantity" required="true" value="{{product.quantity}}"/></td>
+			</tr>
+			<tr>
+			<td>Цена:</td><td><input type="text" pattern="\-?\d+(\.\d{0,})?" id="price" name="price" required="true" value="{{price}}"/><td>
+			</tr>
+			</table>
+		</td>
+		<td>
+	<table id="characters"  align="left">
+		<tr>
+			<th colspan="2" align="center">Основные характеристики</th>			
 		</tr>
 		<tr><th>Название</th><th>Значение</th></tr>
 		{% for ch in characs %}
 			<tr>
 			<td><input type="text" value = "{{ch.name}}" id="{{forloop.counter}}" name="{{forloop.counter}}"/> </td>
-			<td><input type="text" value="{{ch.description}}" id="{{forloop.counter|add:10}}" name="{{forloop.counter|add:10}}"/></td>
+			<td><input type="text" value="{{ch.description}}" id="{{forloop.counter|add:100}}" name="{{forloop.counter|add:100}}"/></td>
 			</tr>
 		{% endfor %}
+		<tr>
+			<td colspan="2" align="center"><input type="button" name="Button1" value="Добавить характеристику" onclick="onPush()" class="m-btn"></td>	
+		</tr>	
 	</table>
-	<input type="button" name="Button1" value="Добавить характеристику" onclick="onPush()">
-	<br />	
-	<input type="submit" value="Готово" />	
+	</td>
+	</tr>	
+	<tr>
+	<td colspan="2" align="center"> <input type="submit" class="m-btn red rnd" value="Готово"/></td>
+	</tr>
+	</table>	
 </form>
 {% endblock %}

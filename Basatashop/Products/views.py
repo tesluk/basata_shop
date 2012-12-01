@@ -217,7 +217,7 @@ def add_char (request, pr_id):
         ch = Characteristic()
         ch.product = pr;
         ch.name = request.POST[chr_name]
-        ch.description = request.POST[str(i+10)]
+        ch.description = request.POST[str(i+100)]
         ch.save()
         i=i+1
         chr_name = str(i)    
