@@ -6,6 +6,7 @@ from Basatashop.Entities.models import Basket, Product, Characteristic, Order, P
 import datetime
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
+from Basatashop.Products.views import get_last_price
 
 def get_order (request):
     
@@ -50,9 +51,10 @@ def get_ready (request):
 def update_basket(request):
     
     basket = request.session['basket']
-    
+    i = 1
     for o in basket.orders:
-        num = request.POST['num']
+        num = request.POST[str(i)]
+        i = i + 1
         o.quantity = num
     
     basket.summ = get_basket_summ(basket)
@@ -61,23 +63,18 @@ def update_basket(request):
     
     return HttpResponseRedirect('/basket')
 
-#def delete_char (request, ch_id):
-#    
-#    basket = request.session['basket']
-#
-#    neworders =[]
-#
-#    for o in basket.orders:
-#        if str(o.characteristic.id) != str(ch_id):
-#            neworders.append(o)
-#
-#    basket.orders = neworders
-#            
-#    basket.summ = get_basket_summ(basket)
-#    basket.size = len(basket.orders)
-#    request.session['basket'] = basket
-#    
-#    return HttpResponseRedirect('/basket/')
+def delete_char (request, ch_id):    
+    basket = request.session['basket']
+    neworders =[]
+    for o in basket.orders:            
+        if str(o.product.id) != ch_id:            
+            neworders.append(o)
+    basket.orders = neworders            
+    basket.summ = get_basket_summ(basket)
+    basket.size = len(basket.orders)
+    request.session['basket'] = basket
+    
+    return HttpResponseRedirect('/basket/')
 
 def get_basket(request):
     
@@ -101,17 +98,22 @@ def add_product (request, pr_id):
         basket = Basket()
         basket.orders = []
     
-    num = request.POST['num']
+    
     if is_product_in_basket(basket, pr):
+        i = 1
         for o in basket.orders:
             if o.product == pr:
+                num = request.POST[str(i)]
+                i = i+1
                 o.quantity = int(o.quantity) + int(num)
-
+                o.price = get_last_price(pr_id).value
     else:
         order = Order()
         order.basket = basket
         order.product = pr
+        num = request.POST['1']
         order.quantity = num
+        order.price = get_last_price(pr_id).value
         if num != 0:
             basket.orders.append(order)
             
