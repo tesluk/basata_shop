@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+<fieldset>
 <table>
 	{% for group in prod_groups %}
 
@@ -9,6 +10,7 @@
 	{% endfor %}
 </table>
 <br />
-{% if user.is_staff %} <a href="/products/addgroup/" class="m-btn">Добавить группу товаров</a>
+{% if user.is_staff %} <a href="/products/addgroup/" class="m-btn"><i class="icon-plus"></i>Добавить группу товаров</a>
+</fieldset>
 {% endif %}
 {% endblock %}
