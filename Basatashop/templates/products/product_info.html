@@ -38,7 +38,7 @@
 	{% endif %}
 		
 	{% if user.is_staff %}
-		<a href="/products/addchar/{{ product.id }}/">Добавить характеристику</a>
+		<a class="m-btn" href="/products/addchar/{{ product.id }}/"><i class="icon-plus"></i>Добавить характеристику</a>
 	{% endif %}
 </div>
 {% endblock %}
