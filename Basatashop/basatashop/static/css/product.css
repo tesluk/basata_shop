@@ -21,3 +21,19 @@ a.groups:hover {
 	font-weight:bold;
 	text-decoration : none
 	}
+	
+a.inbasket:link, a:active {
+	color:#666;
+	font-weight:bold;
+	text-decoration : none
+	}
+a.inbasket:visited {
+	color:#CC6666;
+	font-weight:bold;
+	text-decoration : none
+	}
+a.inbasket:hover {
+	color: #993333; 
+	font-weight:bold;
+	text-decoration : underline
+	}
