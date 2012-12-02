@@ -3,29 +3,33 @@
 {% block title %}Корзина{% endblock %}
 
 {% block content %}
-
+<fieldset id="basket_frame">
+<legend>Корзина</legend>
 {% if not basket or not basket.orders %}
-<p align="center">
-	<h3>Ваша корзина пока пуста</h3>
-</p>
+	<br />
+	<h3 align="left">Ваша корзина пока пуста</h3>
 {% else %}
 <form action="/basket/update/" method="post">
-	<table>
+	<br />
+	<table id="basket_table">
 		{% for order in basket.orders %}
 		<tr>
-			<td><a href="/products/{{ order.product.prod_type.group.id }}/{{ order.product.prod_type.id }}/{{ order.product.id }}/" class="inbasket">{{ order.product.name }}</a></td>
-			<td>{{ order.price }} грн.</td>
-			<td><input type="number" name="{{forloop.counter}}" value="{{ order.quantity }}"/></td>
-			<td><a href="/basket/delete/{{ order.product.id }}" class="m-btn mini"><i class="icon-trash"></i>Удалить</a></td>
-			</tr>
-			{% endfor %}
-			</table>
-			<div id="product"> Итого: {{ basket.summ }} грн.</div> 
+			<td width="200px" align="absmiddle"><a href="/products/{{ order.product.prod_type.group.id }}/{{ order.product.prod_type.id }}/{{ order.product.id }}/" class="inbasket">{{ order.product.name }}</a></td>
+			<td width="200px" align="absmiddle">{{ order.price }} грн.</td>
+			<td width="200px" align="absmiddle"><input type="number" name="{{forloop.counter}}" value="{{ order.quantity }}"/></td>
+			<td width="200px" align="absmiddle"><a href="/basket/delete/{{ order.product.id }}" class="m-btn mini"><i class="icon-trash"></i>Удалить</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+			<br />
+			<div id="product"> Итого: {{ basket.summ }} грн.</div>
+			<br />
 			<input type="submit" class="m-btn" value="Обновить корзину"/>
-			</form>
-			<form action="/basket/order">
+			<br />
+</form>
+		<form action="/basket/order">
 			<input type="submit" class="m-btn red rnd" value="Оформить заказ" />
-			</form>
-			{% endif %}
-
-			{% endblock %}
+		</form>
+	{% endif %}
+</fieldset>
+{% endblock %}

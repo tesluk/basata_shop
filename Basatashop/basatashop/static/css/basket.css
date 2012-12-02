@@ -1,0 +1,12 @@
+#back {
+	border: 1px solid #bbb;
+	border-radius: px;
+}
+
+#basket_frame {
+	min-height: 100px;
+}
+
+#basket_table td{
+	border-bottom: 1px dotted #bbb;
+}
