@@ -3,8 +3,16 @@
 {% block title %}Заказ{% endblock %}
 
 {% block content %}
+
 <form action="/basket/addorder/" method="post">
+<div id="basketInf">
+<fieldset>
+<legend>Оформление заказа</legend>
+	<br/>
 	<table>
+		<tr>
+			<td colspan="2" align="center"><h3> Сумма заказа: {{ basket.summ }} </h3></td>			
+		</tr>
 		<tr>
 			<td>Адрес доставки:</td><td>
 			<input type="text" name='address' required="true" />
@@ -17,10 +25,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Дополнительная информация:</td><td>			<textarea name="comment"></textarea></td>
-		</tr>
-		<p align="center"> <h3> Сумма заказа: {{ basket.summ }} </h3> </p>
+			<td>Дополнительная информация:</td><td><textarea name="comment"></textarea></td>
+		</tr>		
 	</table>
-	<input type="submit"value="Подтвердить заказ" />
+	<input type="submit" class="m-btn red rnd" value="Подтвердить заказ" />
+	<br/>
+<fieldset>
+</div>
 </form>
+
 {% endblock %} 

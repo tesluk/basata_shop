@@ -31,14 +31,22 @@
 		<tr>
 			<td colspan="2"><h2>Основные характеристики</h2></td>
 		</tr>
+		<tr>
+			<td>В наличии: </td>
+			{% if product.quantity > 0 %}
+				<td>Есть</td>
+			{%else%}
+				<td>Нету</td>
+			{% endif %}
+		</tr>
 		{% for ch in characs %}
 		<tr>
-			<td>{{ ch.name }}</td>
+			<td>{{ ch.name }}:</td>
 			<td>{{ ch.description }}</td>
 		</tr>
 		{% endfor %}
 		<tr>
-			<td>Производитель</td>
+			<td>Производитель:</td>
 			<td>{{ product.producer }}</td>
 		</tr>
 	</table>
