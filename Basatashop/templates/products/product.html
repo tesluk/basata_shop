@@ -9,6 +9,6 @@
 			{% endif %}
 		</td>
 		<!--<td> {{ product.sdescription }} </td>-->
-		{% if user.is_staff %} <td width="200px" align="absmiddle"><a href="/products/delete/{{ group.id }}/{{ type.id }}/{{ product.id }}/" />Удалить</a></td>{% endif %}
+		{% if user.is_staff %} <td width="200px" align="absmiddle"><a href="/products/delete/{{ group.id }}/{{ type.id }}/{{ product.id }}/" class="m-btn mini"/><i class="icon-trash"></i>Удалить</a></td>{% endif %}
 	</tr>
 </table>

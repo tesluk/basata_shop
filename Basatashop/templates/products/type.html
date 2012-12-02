@@ -2,7 +2,7 @@
 	<tr>
 		<td><a href="/products/{{ group.id }}/{{ type.id }}/"/><img src="/{{ type.picture_l }}" /></a></td>
 		<td><a href="/products/{{ group.id }}/{{ type.id }}/" class="groups" />{{ type.name }}</a></td>
-		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/{{ type.id }}/" />Удалить</a></td>
+		{% if user.is_staff %} <td><a href="/products/delete/{{ group.id }}/{{ type.id }}/" class="m-btn mini" /><i class="icon-trash"></i>Удалить</a></td>
 		{% endif %}
 	</tr>
 </table>
