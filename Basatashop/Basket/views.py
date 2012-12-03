@@ -23,7 +23,7 @@ def get_order (request):
 def get_ready (request):
     
     basket = request.session['basket']
-    basket.user = request.user
+    basket.user = request.session['user']
     basket.adding_time = datetime.datetime.now()
     basket.address = request.POST['address']
     basket.tel = request.POST['tel']
@@ -34,6 +34,8 @@ def get_ready (request):
     
     for o in basket.orders:
         o.basket = basket
+        o.product.quantity = int(o.product.quantity) - int(o.quantity)
+        o.product.save()
         o.save()
     
     request.session['basket'] = None

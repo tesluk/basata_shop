@@ -78,28 +78,9 @@ class Del_item (models.Model):
     quantity = models.IntegerField()
     price = models.FloatField()    
 
-class Basket (models.Model):
-    BASKET_CHOICES = (
-                      (u'N', u'New'),
-                      (u'R', u'Ready'),
-                      (u'F', u'Finished'),
-                      )
-    user = models.ForeignKey(User) 
-    adding_time = models.DateTimeField()
-    address = models.CharField(max_length=100)
-    tel = models.CharField(max_length=20)
-    comment = models.TextField(blank=True, null=True)
-    #summ = models.FloatField()
-    total = models.FloatField() 
-    btype = models.CharField(max_length=2, choices=BASKET_CHOICES) 
+
     
-class Order (models.Model):
-    basket = models.ForeignKey(Basket)
-    product = models.ForeignKey(Product)
-    quantity = models.IntegerField()
-    price = models.FloatField()
-    #characteristic = models.ForeignKey(Characteristic)
-    #numb = models.IntegerField()
+
     
 #class Company (models.Model):
 #    user = models.ForeignKey(User)
@@ -142,3 +123,26 @@ class SUser (models.Model):
     email = models.EmailField(max_length = 40)    
     getSpam = models.BooleanField()
     is_staff = models.BooleanField()
+    
+class Basket (models.Model):
+    BASKET_CHOICES = (
+                      (u'N', u'New'),
+                      (u'R', u'Ready'),
+                      (u'F', u'Finished'),
+                      )
+    user = models.ForeignKey(SUser) 
+    adding_time = models.DateTimeField()
+    address = models.CharField(max_length=100)
+    tel = models.CharField(max_length=20)
+    comment = models.TextField(blank=True, null=True)
+    #summ = models.FloatField()
+    total = models.FloatField() 
+    btype = models.CharField(max_length=2, choices=BASKET_CHOICES) 
+
+class Order (models.Model):
+    basket = models.ForeignKey(Basket)
+    product = models.ForeignKey(Product)
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    #characteristic = models.ForeignKey(Characteristic)
+    #numb = models.IntegerField()
