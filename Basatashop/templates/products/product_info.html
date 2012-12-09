@@ -7,7 +7,7 @@
 		<h2>{{ product.name }}</h2>
 		<h3>{{ price.value }} грн</h3>
 	</div>
-	{% if user.is_staff %}
+	{% if not user.is_staff %}
 	<div id="order_form">
 		<form action="/basket/add/{{ product.id }}/" method="post">
 			<table border="0">
