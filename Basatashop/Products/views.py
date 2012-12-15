@@ -88,6 +88,23 @@ def get_prod (request, gr_id, tp_id, pr_id):
     c.dicts += mc.dicts
     return HttpResponse(t.render(c))
 
+def get_model(request, gr_id, tp_id, pr_id):    
+    pr = Product.objects.all().get(id=pr_id)
+    gr = Product_group.objects.all().get(id=gr_id)
+    tp = Product_type.objects.all().get(id=tp_id)
+    price = get_last_price(pr_id)
+    characs = Characteristic.objects.all().filter(product=pr)
+    t = get_template('products/product_model.html')
+    
+    if "user" in request.session:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price, 'user':request.session['user']})
+    else:
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
+    
+    mc = get_base_context(request)
+    c.dicts += mc.dicts
+    return HttpResponse(t.render(c))
+
 
 def get_add_prod (request, tp_id):
     tp = Product_type.objects.all().get(id=tp_id)
