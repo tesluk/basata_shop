@@ -106,6 +106,16 @@ def get_model(request, gr_id, tp_id, pr_id):
     return HttpResponse(t.render(c))
 
 
+def get_model_frame(request, gr_id, tp_id, pr_id):    
+    pr = Product.objects.all().get(id=pr_id)
+    t = get_template('products/product_model_frame.html')
+    c = RequestContext(request, {'product':pr})
+    
+    mc = get_base_context(request)
+    c.dicts += mc.dicts
+    return HttpResponse(t.render(c))
+
+
 def get_add_prod (request, tp_id):
     tp = Product_type.objects.all().get(id=tp_id)
     gr = tp.group

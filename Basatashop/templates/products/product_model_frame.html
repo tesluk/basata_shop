@@ -1,0 +1,139 @@
+{% load static %}
+<html>
+<body>
+
+<script src="{%get_static_prefix%}products/js/three.min.js"></script>
+<script src="{%get_static_prefix%}products/js/TrackballControls.js"></script>
+<script src="{%get_static_prefix%}products/js/Detector.js"></script>
+<script src="{%get_static_prefix%}products/js/stats.min.js"></script>
+<script src="{%get_static_prefix%}products/js/ColladaLoader.js"></script>
+<script>
+	
+	var renderer = new THREE.WebGLRenderer({
+		antialias : true
+	});
+	renderer.setSize(document.body.clientWidth, document.body.clientHeight);
+	document.body.appendChild(renderer.domElement);
+	renderer.setClearColorHex(0xffffff, 1.0);
+	renderer.clear();
+	
+
+	var fov = 45; 
+	var width = renderer.domElement.width;
+	var height = renderer.domElement.height;
+	var aspect = width / height; 
+	var near = 1; 
+	var far = 10000; 
+
+	var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+	camera.position.z = -400;
+	camera.position.x = 200;
+	camera.position.y = 350;
+
+	
+	controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+	controls.rotateSpeed = 1.0;
+	controls.zoomSpeed = 1.2;
+	
+	controls.noZoom = false;
+	controls.noPan = true;
+	
+	controls.staticMoving = false;
+	
+	controls.addEventListener('change', render);
+
+	var scene = new THREE.Scene();
+
+	new THREE.ColladaLoader().load('../../../../../{{product.model}}', function(collada) {
+		var model = collada.scene;
+		skin = collada.skins[0];
+		
+		model.scale.set(0.5, 0.5, 0.5);
+		model.rotation.x = -Math.PI / 2;
+		model.rotation.y = 0;
+		model.castShadow = model.receiveShadow = true;
+
+		model.position.x = 50;
+		model.position.y = 50;
+		model.position.z = 50;
+
+		scene.add(model);
+	});
+
+	var light = new THREE.SpotLight();
+	light.castShadow = true;
+	light.position.set(400, 330, -260);
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.castShadow = true;
+	light.position.set(-400, -330, 260);
+	scene.add(light);
+
+	renderer.shadowMapEnabled = true;
+
+	renderer.render(scene, camera);
+	var paused = false;
+	var last = new Date().getTime();
+	var down = false;
+	var sx = 0, sy = 0;
+	window.onmousedown = function(ev) {
+		down = true;
+		sx = ev.clientX;
+		sy = ev.clientY;
+	};
+	window.onmouseup = function() {
+		down = false;
+	};
+	var rotation = Math.PI / 2;
+	camera.position.x = Math.cos(rotation) * 300;
+	camera.position.z = Math.sin(rotation) * 300;
+
+	window.onmousemove = function(ev) {
+		if (down) {
+			var dx = ev.clientX - sx;
+			var dy = ev.clientY - sy;
+			rotation += dx * 0.01;
+			camera.position.x = Math.cos(rotation) * 300;
+			camera.position.z = Math.sin(rotation) * 300;
+			camera.position.y += dy;
+			sx += dx;
+			sy += dy;
+		}
+	}
+	var st = 0;
+	var skin = null;
+
+	function render() {
+
+		renderer.render(scene, camera);
+
+	}
+
+	function animate(t) {
+		if (!paused) {
+			last = t;
+			if (st > 30)
+				st = 0;
+
+			if (skin) {
+				for ( var i = 0; i < skin.morphTargetInfluences.length; i++) {
+					skin.morphTargetInfluences[i] = 0;
+				}
+				skin.morphTargetInfluences[Math.floor(st)] = 1;
+				st += 0.5;
+			}
+			camera.lookAt(scene.position);
+			renderer.render(scene, camera);
+		}
+		window.requestAnimationFrame(animate, renderer.domElement);
+		controls.update();
+	};
+	animate(new Date().getTime());
+	onmessage = function(ev) {
+		paused = (ev.data == 'pause');
+	};
+</script>   
+</body>
+</html>

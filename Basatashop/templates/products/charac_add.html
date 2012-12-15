@@ -20,7 +20,9 @@
 			<td>Название:</td><td><input type="text" id="name" name="name" required="true"  value="{{product.name}}"/></td>
 			</tr>
 			<tr>
-			<td>Описание:</td><td><input type="text" size="50" id="sdescr" name="sdescr" required="true" value="{{product.sdescription}}"/></td>
+			<td>Описание:</td><td><textarea cols="40" rows="3" size="50" id="sdescr" name="sdescr" required="true">
+			{{product.sdescription}}
+			</textarea></td>
 			</tr>
 			<tr>
 			<td>Производитель:</td><td><input type="text" id="producer" name="producer" required="true" value="{{product.producer}}"/></td>
