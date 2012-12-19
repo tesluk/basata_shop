@@ -2,17 +2,17 @@
 {% load static %}
 {% block content %}
 
-<div id="product_info">
-	<script src="{%get_static_prefix%}products/js/accounting.js"></script>
-	<script src="{%get_static_prefix%}products/js/accounting.min.js"></script>
-	<script type="text/javascript">
-	document.write("<p>My First JavaScript</p>");
-	accounting.formatMoney(5318008);
-	</script>
-	<div id="product_name_price">
-		
+<script src="{%get_static_prefix%}products/js/accounting.js"></script>
+<script src="{%get_static_prefix%}products/js/accounting.min.js"></script>
+	
+<div id="product_info">	
+	<div id="product_name_price">		
 		<h2>{{ product.name }}</h2>
-		<h3>{{ price.value }} грн</h3>
+		<h3>
+		<script type="text/javascript">
+		document.write(accounting.formatMoney("{{priceV}}", "грн", 2, " ", ".", "%v %s"));
+		</script>
+		</h3>
 	</div>
 	{% if not user.is_staff %}
 	<div id="order_form">

@@ -80,9 +80,9 @@ def get_prod (request, gr_id, tp_id, pr_id):
     t = get_template('products/product_info.html')
     
     if "user" in request.session:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price, 'user':request.session['user']})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'priceV':str(price.value), 'user':request.session['user']})
     else:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'characs':characs, 'price':price})
+        c = RequestContext(request, {'group':gr, 'type':tp, 'product':pr, 'priceV':str(price.value), 'characs':characs, 'price':price})
     
     mc = get_base_context(request)
     c.dicts += mc.dicts
