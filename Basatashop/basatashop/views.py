@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.template.context import RequestContext
 from Basatashop.Entities.models import SUser
+from Basatashop.Entities.contex_generator import get_base_context
 
 def create_admin():
      try:
@@ -50,31 +51,30 @@ def index (request):
     create_admin()
     create_courier()
     
-    if "user" in request.session:
-        return render_to_response('index.html', {'user': request.session['user']},context_instance=RequestContext(request))
-    else:
-        return render_to_response('index.html', {},context_instance=RequestContext(request))
+    mc = get_base_context(request)
+    
+    return render_to_response('index.html', mc ,context_instance=RequestContext(request))
 
 def about (request):
     c = {}
     c.update(csrf(request))
-    if "user" in request.session:
-        return render_to_response('about.html', {'user': request.session['user']},context_instance=RequestContext(request))
-    else:
-        return render_to_response('about.html', {},context_instance=RequestContext(request))
+    
+    mc = get_base_context(request)
+    
+    return render_to_response('about.html', mc,context_instance=RequestContext(request))
 
 def contacts (request):
     c = {}
     c.update(csrf(request))
-    if "user" in request.session:
-        return render_to_response('contacts.html', {'user': request.session['user']},context_instance=RequestContext(request))
-    else:
-        return render_to_response('contacts.html', {},context_instance=RequestContext(request))
+    
+    mc = get_base_context(request)
+
+    return render_to_response('contacts.html', mc,context_instance=RequestContext(request))
 
 def delivery (request):
     c = {}
     c.update(csrf(request))
-    if "user" in request.session:
-        return render_to_response('delivery_terms.html', {'user': request.session['user']},context_instance=RequestContext(request))
-    else:
-        return render_to_response('delivery_terms.html', {},context_instance=RequestContext(request))   
+    
+    mc = get_base_context(request)
+
+    return render_to_response('delivery_terms.html', mc,context_instance=RequestContext(request))   
