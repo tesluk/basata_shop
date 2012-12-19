@@ -3,7 +3,14 @@
 {% block content %}
 
 <div id="product_info">
+	<script src="{%get_static_prefix%}products/js/accounting.js"></script>
+	<script src="{%get_static_prefix%}products/js/accounting.min.js"></script>
+	<script type="text/javascript">
+	document.write("<p>My First JavaScript</p>");
+	accounting.formatMoney(5318008);
+	</script>
 	<div id="product_name_price">
+		
 		<h2>{{ product.name }}</h2>
 		<h3>{{ price.value }} грн</h3>
 	</div>
