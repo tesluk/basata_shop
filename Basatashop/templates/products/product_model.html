@@ -1,5 +1,11 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-{{product.model}}
+
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<iframe src="/products/model3Dframe/{{ group.id }}/{{ type.id }}/{{ product.id }}/" width="800" height="500" scrolling="no">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe>
+
+
+
+
 {% endblock %}

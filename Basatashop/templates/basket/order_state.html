@@ -12,22 +12,20 @@
 	<br/>
 	<table border="1" width="700">
 		<tr>
-			<td width="100"> Номер заказа </td>
-			<td width="100"> Время </td>
-			<td width="100"> Адрес </td>
-			<td width="100"> Телефон </td>
-			<td width="100"> Коменарии </td>
-			<td width="100"> Цена </td>
-			<td width="100"> Статус </td>
+			<th width="100"> Номер заказа </th>
+			<th width="100"> Время </th>
+			<th width="100"> Адрес </th>
+			<th width="100"> Телефон </th>
+			<th width="100"> Коменарии </th>
+			<th width="100"> Цена </th>
+			<th width="100"> Статус </th>
 		</tr>
-	</table>
 	{% if user.is_staff == 1 %}
 
 	{% for basket in baskets %}
 	<form action="/basket/finish_order/" method="post" accept-charset="UTF-8">
 		{% csrf_token %}
 		<input type="hidden" name="basket_id" value="{{basket.id}}" />
-		<table border="1" width="700">
 			<tr>
 				<td width="100"> {{basket.id}} </td>
 				<td width="100"> {{basket.adding_time}} </td>
@@ -39,13 +37,11 @@
 				<input type="submit" value="Выполнить">
 				</td>
 			</tr>
-		</table>
 	</form>
 	{% endfor %}
 
 	{% else %}
 	{% for basket in baskets %}
-	<table border="1" width="700">
 		<tr>
 			<td width="100"> {{basket.id}} </td>
 			<td width="100"> {{basket.adding_time}} </td>
@@ -57,9 +53,9 @@
 			{% else %} <td width="100"> Подтвержден </td>
 			{% endif %}
 		</tr>
-	</table>
 	{% endfor %}
 
 	{% endif %}
+	</table>
 </center>
 {% endblock %}
