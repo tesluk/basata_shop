@@ -59,7 +59,7 @@ def update_basket(request):
         i = i + 1
         o.quantity = num
     
-    basket.summ = get_basket_summ(basket)
+    basket.total = get_basket_summ(basket)
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -72,7 +72,7 @@ def delete_char (request, ch_id):
         if str(o.product.id) != ch_id:            
             neworders.append(o)
     basket.orders = neworders            
-    basket.summ = get_basket_summ(basket)
+    basket.total = get_basket_summ(basket)
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -120,6 +120,7 @@ def add_product (request, pr_id):
             basket.orders.append(order)
             
     basket.total = get_basket_summ(basket)
+    print basket.total
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -148,13 +149,17 @@ def order_state (request):
     print user1.is_staff, user1.login
     if (user1.is_staff == 1):
         try:
+            print "Admin"
             baskets = Basket.objects.filter(btype='R')
         except baskets.DoesNotExist:
             return HttpResponse("Error")
     else:
         try:
+            print "User"
             baskets = Basket.objects.filter(user=user1)
+            print 
         except baskets.DoesNotExist:
+            "Bad"
             return HttpResponse("Error")
     
     mc = get_base_context(request)
