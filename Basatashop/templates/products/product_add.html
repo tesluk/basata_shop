@@ -11,6 +11,7 @@
 		cell2.innerHTML="<input type=\"text\" id=\"ch"+i+"_value\" name=\"ch"+i+"_value\"/>";
 	}
 </script>
+<div id="product">
 <form action="/products/newproduct/{{ type.id }}/"  name = "addprod" method="post" enctype="multipart/form-data"> {% csrf_token %}
 		<table>
 		<tr>
@@ -57,5 +58,5 @@
 		</tr>
 	</table>	
 </form>
-
+</div>
 {% endblock %}

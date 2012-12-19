@@ -11,6 +11,7 @@
 		cell2.innerHTML="<input type=\"text\" id= "+(i+100)+" name=\""+(i+100)+"\" />";
 	}
 </script>
+<div id="product">
 <form action="/products/newchar/{{ product.id }}/" method="post"   enctype="multipart/form-data"> {% csrf_token %}
 	<table>
 		<tr>
@@ -66,4 +67,5 @@
 	</tr>
 	</table>	
 </form>
+</div>
 {% endblock %}
