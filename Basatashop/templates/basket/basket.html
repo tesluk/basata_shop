@@ -7,7 +7,7 @@
 <legend>Корзина</legend>
 {% if not basket or not basket.orders %}
 	<br />
-	<h3 align="left">Ваша корзина пока пуста</h3>
+	<h3 align="center">Ваша корзина пока пуста</h3>
 {% else %}
 <form action="/basket/update/" method="post">
 	<br />
@@ -15,14 +15,16 @@
 		{% for order in basket.orders %}
 		<tr>
 			<td width="200px" align="absmiddle"><a href="/products/{{ order.product.prod_type.group.id }}/{{ order.product.prod_type.id }}/{{ order.product.id }}/" class="inbasket">{{ order.product.name }}</a></td>
-			<td width="200px" align="absmiddle">{{ order.price }} грн.</td>
+			<td width="200px" align="absmiddle">{{ order.price|stringformat:".2f" }} грн.</td>
 			<td width="200px" align="absmiddle"><input type="number" name="{{forloop.counter}}" value="{{ order.quantity }}" min="1" max="{{order.product.quantity}}"/></td>
 			<td width="200px" align="absmiddle"><a href="/basket/delete/{{ order.product.id }}" class="m-btn mini"><i class="icon-trash"></i>Удалить</a></td>
 		</tr>
 		{% endfor %}
 	</table>
 			<br />
-			<div id="basketInf"> Итого: {{ basket.summ }} грн.</div>
+			<div id="basketInf"> Итого: {{basket.summ|stringformat:".2f"}}
+				
+			</div>
 			<br />
 			<input type="submit" class="m-btn" value="Обновить корзину"/>
 			<br />
