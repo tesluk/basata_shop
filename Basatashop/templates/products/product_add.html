@@ -11,6 +11,7 @@
 		cell2.innerHTML="<input type=\"text\" id=\"ch"+i+"_value\" name=\"ch"+i+"_value\"/>";
 	}
 </script>
+<div id="product">
 <form action="/products/newproduct/{{ type.id }}/"  name = "addprod" method="post" enctype="multipart/form-data"> {% csrf_token %}
 		<table>
 		<tr>
@@ -20,7 +21,7 @@
 			<td>Название:</td><td><input type="text" id="name" name="name" required="true" /></td>
 			</tr>
 			<tr>
-			<td>Описание:</td><td><input type="text" size="50" id="sdescr" name="sdescr" required="true" /></td>
+			<td>Описание:</td><td><textarea cols="40" rows="3" size="50" id="sdescr" name="sdescr" required="true" ></textarea></td>
 			</tr>
 			<tr>
 			<td>Производитель:</td><td><input type="text" id="producer" name="producer" required="true" /></td>
@@ -57,5 +58,5 @@
 		</tr>
 	</table>	
 </form>
-
+</div>
 {% endblock %}

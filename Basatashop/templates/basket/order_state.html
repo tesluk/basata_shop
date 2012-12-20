@@ -3,32 +3,25 @@
 {% block title %}MAIN{% endblock %}
 
 {% block content %}
-<center>
-	<h1>
-	<p align="left">
-		Состояние заказов
-	</p></h1>
-	<!--Вы вошли как {{user.username}}-->
-	<br/>
-	<table border="1" width="700">
-		<tr>
-			<td width="100"> Номер заказа </td>
-			<td width="100"> Время </td>
-			<td width="100"> Адрес </td>
-			<td width="100"> Телефон </td>
-			<td width="100"> Коменарии </td>
-			<td width="100"> Цена </td>
-			<td width="100"> Статус </td>
-		</tr>
-	</table>
+<fieldset>
+<legend>Состояние заказов</legend>
+<table border="1" bordercolor="#f9f9f9" cellpadding="0" cellspacing="0">
+	<tr id = "prod_in_list" height="50">
+		<th width="100"> Номер заказа </th>
+		<th width="100"> Время </th>
+		<th width="100"> Адрес </th>
+		<th width="100"> Телефон </th>
+		<th width="100"> Коменарии </th>
+		<th width="100"> Цена </th>
+		<th width="100"> Статус </th>
+	</tr>
 	{% if user.is_staff == 1 %}
 
 	{% for basket in baskets %}
 	<form action="/basket/finish_order/" method="post" accept-charset="UTF-8">
 		{% csrf_token %}
 		<input type="hidden" name="basket_id" value="{{basket.id}}" />
-		<table border="1" width="700">
-			<tr>
+			<tr id = "prod_in_list" height="50">
 				<td width="100"> {{basket.id}} </td>
 				<td width="100"> {{basket.adding_time}} </td>
 				<td width="100"> {{basket.address}} </td>
@@ -39,27 +32,25 @@
 				<input type="submit" value="Выполнить">
 				</td>
 			</tr>
-		</table>
 	</form>
 	{% endfor %}
-
 	{% else %}
 	{% for basket in baskets %}
-	<table border="1" width="700">
-		<tr>
+		<tr id = "prod_in_list" height="50">
 			<td width="100"> {{basket.id}} </td>
 			<td width="100"> {{basket.adding_time}} </td>
 			<td width="100"> {{basket.address}} </td>
 			<td width="100"> {{basket.tel}} </td>
 			<td width="100"> {{basket.comment}} </td>
-			<td width="100"> {{basket.summ}} </td>
+			<td width="100"> {{basket.total}} </td>
 			{% if basket.btype == 'R'%} <td width="100"> Не подтвержден </td>
 			{% else %} <td width="100"> Подтвержден </td>
 			{% endif %}
 		</tr>
-	</table>
 	{% endfor %}
 
 	{% endif %}
-</center>
+</table>
+</fieldset>
+
 {% endblock %}

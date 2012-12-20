@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <form action="/products/newgroup/" method="post" enctype="multipart/form-data"> {% csrf_token %}
-	
+<div id="addType">		
 	Название:<input type="text" id="name" name="name" required="true" />
 	<br />
 	Изображение:<input type="file" name="img" accept="image/*"/>
 	<br />
-	<input type="submit" value="Отправить" />
+	<input type="submit" class="m-btn red rnd" value="Отправить" />
+</div>
 </form>
 {% endblock %}

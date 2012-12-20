@@ -10,7 +10,7 @@ from Basatashop.Products.views import get_last_price
 
 def get_order (request):
     
-    t =get_template('basket/order.html')
+    t = get_template('basket/order.html')
     if "user" in request.session:
         c = RequestContext(request, {'user':request.session['user']})
     else:
@@ -40,7 +40,7 @@ def get_ready (request):
     
     request.session['basket'] = None
     
-    t =get_template('basket/ready.html')
+    t = get_template('basket/ready.html')
     if "user" in request.session:
         c = RequestContext(request, {'order_id':basket.id, 'user':request.session['user']})
     else:
@@ -59,7 +59,7 @@ def update_basket(request):
         i = i + 1
         o.quantity = num
     
-    basket.summ = get_basket_summ(basket)
+    basket.total = get_basket_summ(basket)
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -67,12 +67,12 @@ def update_basket(request):
 
 def delete_char (request, ch_id):    
     basket = request.session['basket']
-    neworders =[]
+    neworders = []
     for o in basket.orders:            
         if str(o.product.id) != ch_id:            
             neworders.append(o)
     basket.orders = neworders            
-    basket.summ = get_basket_summ(basket)
+    basket.total = get_basket_summ(basket)
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -106,7 +106,7 @@ def add_product (request, pr_id):
         for o in basket.orders:
             if o.product == pr:
                 num = request.POST[str(i)]
-                i = i+1
+                i = i + 1
                 o.quantity = int(o.quantity) + int(num)
                 o.price = get_last_price(pr_id).value
     else:
@@ -120,6 +120,7 @@ def add_product (request, pr_id):
             basket.orders.append(order)
             
     basket.total = get_basket_summ(basket)
+    print basket.total
     basket.size = len(basket.orders)
     request.session['basket'] = basket
     
@@ -148,18 +149,25 @@ def order_state (request):
     print user1.is_staff, user1.login
     if (user1.is_staff == 1):
         try:
+            print "Admin"
             baskets = Basket.objects.filter(btype='R')
         except baskets.DoesNotExist:
             return HttpResponse("Error")
     else:
         try:
+            print "User"
             baskets = Basket.objects.filter(user=user1)
+            print 
         except baskets.DoesNotExist:
+            "Bad"
             return HttpResponse("Error")
-    if "user" in request.session:
-        return render_to_response('basket/order_state.html', {"baskets":  baskets, 'user':request.session['user']},context_instance=RequestContext(request))
-    else:
-        return render_to_response('basket/order_state.html', {"baskets":  baskets},context_instance=RequestContext(request))
+    
+    mc = get_base_context(request)
+    
+    c = RequestContext(request, {"baskets":  baskets})
+    c.dicts += mc.dicts
+
+    return render_to_response('basket/order_state.html', c, context_instance=RequestContext(request))
 
 def finish_order (request):
     c = {}

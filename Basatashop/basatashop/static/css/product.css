@@ -4,7 +4,14 @@
 	font-weight: bold;
 	size: 4pt;	
 }
-
+#addType{
+	color:#666666;
+	font-family: Tahoma, sans-serif;
+	size: 4pt;	
+	margin-left: 25%;
+	margin-top: 3%;
+	text-align: left
+}
 a.groups:link, a:active {
 	color:#666;
 	font-weight:bold;
