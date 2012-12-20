@@ -1,5 +1,5 @@
 {% load static %}
-<product id="{{ prod.id }}" name="{{ prod.name }}" count="{{ prod.quantity }}" desription="{{ prod.sdescription }}" pic="{{ prod.picture_l }}">
+<product id="{{ prod.id }}" name="{{ prod.name }}" count="{{ prod.quantity }}" desription="{{ prod.sdescription }}" price="{{ prod.price }}" pic="{{ prod.picture_l }}">
 	{% for char in chars %}
 	<char name="{{ char.name }}" value="{{ char.description }}" />
 	{% endfor %}

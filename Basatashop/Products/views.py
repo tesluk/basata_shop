@@ -1,5 +1,5 @@
 from django.template.loader import get_template
-from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price
+from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price, Basket, SUser, Order
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
@@ -15,7 +15,7 @@ def get_last_price(pr_id):
     if len(list(prices)) == 0:
         price = 0
     else:
-        price = prices.order_by('date_init')[len(list(prices))-1]
+        price = prices.order_by('date_init')[len(list(prices)) - 1]
     return price
 
 def add_picture(obj, new_name, typ):
@@ -25,9 +25,9 @@ def add_picture(obj, new_name, typ):
             obj.picture = new_name
             break
         except:
-            os.remove(new_name+typ)
-            os.remove(new_name+'_l'+typ)
-            os.remove(new_name+'_b'+typ)
+            os.remove(new_name + typ)
+            os.remove(new_name + '_l' + typ)
+            os.remove(new_name + '_b' + typ)
     
 def get_all_groups (request):    
     groups = Product_group.objects.all()
@@ -160,7 +160,7 @@ def get_add_char (request, pr_id):
     price = get_last_price(pr_id).value
     charac = Characteristic.objects.all().filter(product=pr_id)
     if "user" in request.session:
-        c = RequestContext(request, {'product':pr, 'characs':charac, 'price' : str(price),'user':request.session['user']})
+        c = RequestContext(request, {'product':pr, 'characs':charac, 'price' : str(price), 'user':request.session['user']})
     else:        
         c = RequestContext(request, {'product':pr, 'characs':charac, 'price' : str(price)})
     
@@ -178,8 +178,8 @@ def add_type (request, gr_id):
         tp.picture = request.FILES['img']
         tp.save()
         typ = str(tp.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(gr.id)+'_'+str(tp.id); 
-        t = '.'+typ[len(typ)-1] 
+        new_name = 'Entities/static/products/img_' + str(gr.id) + '_' + str(tp.id); 
+        t = '.' + typ[len(typ) - 1] 
         add_picture(tp, new_name, t)        
     else: 
         tp.picture = 'Entities/static/products/standart.png';    
@@ -195,8 +195,8 @@ def add_group (request):
         gr.picture = request.FILES['img']
         gr.save()
         typ = str(gr.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(gr.id)
-        t = '.'+typ[len(typ)-1] 
+        new_name = 'Entities/static/products/img_' + str(gr.id)
+        t = '.' + typ[len(typ) - 1] 
         add_picture(gr, new_name, t)      
     else: 
         gr.picture = 'Entities/static/products/standart.png';        
@@ -215,13 +215,13 @@ def add_char (request, pr_id):
         pr.save()
         typ = str(pr.picture).split('.') 
         pt = Product_type.objects.all().get(id=pr.prod_type.id)
-        new_name = 'Entities/static/products/img_'+str(pt.group.id)+'_'+str(pt.id)+'_'+str(pr.id)    
-        t = '.'+typ[len(typ)-1] 
-        add_picture(pr, new_name,t)
+        new_name = 'Entities/static/products/img_' + str(pt.group.id) + '_' + str(pt.id) + '_' + str(pr.id)    
+        t = '.' + typ[len(typ) - 1] 
+        add_picture(pr, new_name, t)
     if 'userfile' in request.FILES:       
-        pr.model= request.FILES['userfile']
+        pr.model = request.FILES['userfile']
         pr.save()
-        new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae'
+        new_name = 'Entities/static/products/models_' + str(tp.group.id) + '_' + str(tp.id) + '_' + str(pr.id) + '.dae'
         for i in range(2):
             try:
                 os.rename(str(pr.model), new_name)
@@ -236,7 +236,7 @@ def add_char (request, pr_id):
     price.product = pr
     price.date_init = datetime.today().date()
     price.save()
-    Characteristic.objects.filter(product = pr).delete()
+    Characteristic.objects.filter(product=pr).delete()
     ch = Characteristic()
     chr_name = str(1) 
     i = 1
@@ -244,9 +244,9 @@ def add_char (request, pr_id):
         ch = Characteristic()
         ch.product = pr;
         ch.name = request.POST[chr_name]
-        ch.description = request.POST[str(i+100)]
+        ch.description = request.POST[str(i + 100)]
         ch.save()
-        i=i+1
+        i = i + 1
         chr_name = str(i)    
     return HttpResponseRedirect('/products/' + str(pr.prod_type.group.id) + '/' + str(pr.prod_type.id) + '/' + str(pr.id) + '/')
           
@@ -262,9 +262,9 @@ def add_prod (request, tp_id):
     if 'picture' in request.FILES:
         pr.picture = request.FILES['picture']
         if 'userfile' in request.FILES:
-            pr.model= request.FILES['userfile']
+            pr.model = request.FILES['userfile']
             pr.save()
-            new_name = 'Entities/static/products/models_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)+'.dae'
+            new_name = 'Entities/static/products/models_' + str(tp.group.id) + '_' + str(tp.id) + '_' + str(pr.id) + '.dae'
             for i in range(2):   
                 try:                    
                     os.rename(str(pr.model), new_name)
@@ -277,8 +277,8 @@ def add_prod (request, tp_id):
 
         pr.save() 
         typ = str(pr.picture).split('.') 
-        new_name = 'Entities/static/products/img_'+str(tp.group.id) + '_' + str(tp.id)+'_'+str(pr.id)
-        t = '.'+typ[len(typ)-1] 
+        new_name = 'Entities/static/products/img_' + str(tp.group.id) + '_' + str(tp.id) + '_' + str(pr.id)
+        t = '.' + typ[len(typ) - 1] 
         add_picture(pr, new_name, t)
     else: 
         pr.picture = 'Entities/static/products/standart.png';  
@@ -290,16 +290,16 @@ def add_prod (request, tp_id):
     price.date_init = datetime.today().date()
     price.save()       
     ch = Characteristic()
-    chr_name = 'ch'+str(1)+'_name' 
+    chr_name = 'ch' + str(1) + '_name' 
     i = 1
     while chr_name in request.POST:
         ch = Characteristic()
         ch.product = pr;
         ch.name = request.POST[chr_name]
-        ch.description = request.POST['ch'+str(i)+'_value']
+        ch.description = request.POST['ch' + str(i) + '_value']
         ch.save()
-        i=i+1
-        chr_name = 'ch'+str(i)+'_name' 
+        i = i + 1
+        chr_name = 'ch' + str(i) + '_name' 
        
     resize_picture(pr)           
     return HttpResponseRedirect('/products/' + str(tp.group.id) + '/' + str(tp.id) + '/')  
@@ -344,10 +344,7 @@ def get_types_xml (request, gr_id):
         tp.count = len(Product.objects.all().filter(prod_type=tp))
     
     t = get_template('xml/types.xml')
-    if "user" in request.session:
-        c = RequestContext(request, {'group':gr, 'types':types, 'user':request.session['user']})
-    else:
-        c = RequestContext(request, {'group':gr, 'types':types})    
+    c = RequestContext(request, {'group':gr, 'types':types})    
     return HttpResponse(t.render(c))
 
 
@@ -358,29 +355,99 @@ def get_products_xml (request, tp_id):
     gr = tp.group
     
     products = Product.objects.all().filter(prod_type=tp)
-    
-    # TODO add prices
+
+    for prod in products:
+        prod.price = Price.objects.all().filter(product=prod.id)[0].value
     
     t = get_template('xml/products.xml')
-    if "user" in request.session:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products , 'user':request.session['user']})
-    else:
-        c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})    
+    c = RequestContext(request, {'group':gr, 'type':tp, 'products':products})    
     return HttpResponse(t.render(c))
 
 
 def get_product_xml (request, pr_id):
     
-    prod = Product.objects.all().filter(id=pr_id)
+    prod = Product.objects.all().filter(id=pr_id)[0]
     
-    chars = Characteristic.objects.all().filter(product = prod)
+    chars = Characteristic.objects.all().filter(product=prod)
     
-    # TODO add price
+    prod.price = Price.objects.all().filter(product=prod)[0].value
     
     t = get_template('xml/product.xml')
-    if "user" in request.session:
-        c = RequestContext(request, {'product':prod, 'chars':chars, 'user':request.session['user']})
-    else:
-        c = RequestContext(request, {'product':prod, 'chars':chars})    
+    c = RequestContext(request, {'prod':prod, 'chars':chars})    
     return HttpResponse(t.render(c))
 
+def get_sales(request):
+    
+    baskets = Basket.objects.all()
+    
+    for basket in baskets:
+        basket.orders = Order.objects.all().filter(basket=basket)
+        basket.date = basket.adding_time.strftime('%Y%m%d%H%M')
+    
+    t = get_template('xml/sales.xml')
+    c = RequestContext(request, {'baskets':baskets})    
+    
+    return HttpResponse(t.render(c))
+    
+
+def buy_product (request, pr_id):
+
+    t = get_template('xml/answer.xml')
+
+    login = request.GET['login']
+    pas = request.GET['pass']
+    total = request.GET['total']
+    count = request.GET['count']
+
+    print login
+    print pas
+    print total
+    print count
+    
+    if is_user_exists(login, pas):
+        u = get_user(login, pas)
+    else:
+        c = RequestContext(request, {'answer':'error'})
+        return HttpResponse(t.render(c))
+
+    basket = Basket()
+    basket.user_id = u.id
+    basket.adding_time = datetime.now()
+    basket.address = u.city + ' ' + u.street
+    basket.btype = u'R'
+    basket.total = total
+    basket.save()
+    
+    pr = get_product_by_id(pr_id)
+    pr.quantity = pr.quantity - int(count)
+    
+    order = Order()
+    order.basket = basket
+    order.product = pr
+    order.quantity = count
+    order.price = float(total) / int(count)
+    order.save()
+     
+    print pr.name
+    
+    print 'NICE'
+    
+    c = RequestContext(request, {'answer':'ok'})
+    return HttpResponse(t.render(c))
+    
+#    for o in basket.orders:
+#        o.basket = basket
+#        o.product.quantity = int(o.product.quantity) - int(o.quantity)
+#        o.product.save()
+#        o.save()
+
+# Check is user exists
+def is_user_exists (login, pas):
+    users = SUser.objects.all().filter(login=login, password=pas)
+    return len(users) > 0
+
+def get_user (login, pas):
+    return SUser.objects.all().filter(login=login, password=pas)[0]
+
+def get_product_by_id (pr_id):
+    return Product.objects.all().filter(id=pr_id)[0]
