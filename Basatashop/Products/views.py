@@ -1,5 +1,5 @@
 from django.template.loader import get_template
-from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price
+from Basatashop.Entities.models import Product_group, Product_type, Product, Characteristic, Price, Order, Basket
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from Basatashop.Entities.pic_resize import resize_picture
@@ -355,5 +355,42 @@ def get_product_xml (request, pr_id):
         c = RequestContext(request, {'product':prod, 'chars':chars, 'user':request.session['user']})
     else:
         c = RequestContext(request, {'product':prod, 'chars':chars})    
+    return HttpResponse(t.render(c))
+
+def show_graphics(request, gr_id, tp_id, pr_id):    
+    
+    try:
+        prices = Price.objects.filter(product=pr_id)
+    except Price.DoesNotExist:
+        prices = {}               
+    
+    try:
+        orders_unsummed = Order.objects.filter(product=pr_id)
+        orders_times = []
+        orders_values = []
+        for i in orders_unsummed:
+            cur_basket = Basket.objects.get(id=i.basket.id)
+            try:
+                cur_time = orders_times.index(str(cur_basket.adding_time).split(' ',2)[0],0)
+            except ValueError:
+                orders_times.append(str(cur_basket.adding_time).split(' ',2)[0])
+                sum = 0
+                for j in orders_unsummed:                    
+                    cur_cur_basket = Basket.objects.get(id=j.basket.id)
+                    wtf = str(cur_basket.adding_time).split(' ',2)[0]
+                    what = str(cur_cur_basket.adding_time).split(' ',2)[0]  
+                    if what == wtf:
+                        sum += j.quantity
+                orders_values.append(sum)
+    except Order.DoesNotExist:
+        orders_times = {}
+        orders_values = {}
+    
+    
+    t = get_template('products/product_graphics.html')    
+    if "user" in request.session:
+        c = RequestContext(request, {'user':request.session['user'], 'prices':prices, 'orders_times':orders_times, 'orders_values':orders_values})
+    else:
+        c = RequestContext(request, {'prices':prices, 'orders_times':orders_times, 'orders_values':orders_values})    
     return HttpResponse(t.render(c))
 
