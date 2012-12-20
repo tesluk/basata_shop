@@ -45,10 +45,12 @@ urlpatterns = patterns('',
       (r'^products/newtype/(\d{1,3})/$', 'Products.views.add_type'),
 
       (r'^products/newproduct/(\d{1,3})/$', 'Products.views.add_prod'),
-      (r'^products/newchar/(\d{1,3})/$', 'Products.views.add_char'),
+      (r'^products/newchar/(\d{1,3})/$', 'Products.views.add_char'),      
 #      (r'^products/savegroup/(\d{1,3})/$', 'Products.views.save_group'),
 #      (r'^products/savetype/(\d{1,3})/$', 'Products.views.save_type'),
 #      (r'^products/saveproduct/(\d{1,3})/$', 'Products.views.save_prod'),
+
+    (r'^products/(\d{1,3})/(\d{1,3})/(\d{1,3})/graphics/$', 'Products.views.show_graphics'),    
 
      (r'^basket/$', 'Basket.views.get_basket'),
      (r'^basket/add/(\d{1,3})/$', 'Basket.views.add_product'),

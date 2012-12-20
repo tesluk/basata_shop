@@ -29,6 +29,7 @@ def sregister(request):
                     cur_user.street = request.POST['street']
                     cur_user.email = request.POST['email']
                     cur_user.password = request.POST['password']
+                    cur_user.get_spam = request.POST['get_spam']
                     cur_user.is_staff = 0
                     if request.POST.__contains__('get_spam'):
                         cur_user.getSpam = 1

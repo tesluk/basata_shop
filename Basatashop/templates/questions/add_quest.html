@@ -1,10 +1,20 @@
-
+<div id = "product">
 <form action="/questions/addquest/" method="post"> {% csrf_token %}
-	Имя 	<input type="text" id="fio" name="fio" required="true" />
-	<br />
-	E-mail <input type="email" id="email" name="email" required="true" />
-	<br />
-	Вопрос <input type="text" id="text" name="text" required="true" />
-	<br />
-	<input type="submit" value="Отправить" />
+<table>
+<tr>
+	<td>Имя</td><td><input type="text" id="fio" name="fio" required="true"/></td>
+</tr>
+<tr>
+	<td>E-mail</td><td><input type="email" id="email" name="email" required="true" /></td>
+</tr>
+<tr>
+	<td>Вопрос</td><td><textarea cols="40" rows="3" size="40" id="text" name="text" required="true"></textarea></td>
+</tr>
+<tr>
+	<td colspan="2" align="center"> 
+		<input type="submit" class="m-btn red rnd" value="Отправить" />
+	</td>
+</tr>
+</table>
+</div>
 </form>

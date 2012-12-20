@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<FONT COLOR="FF####"><h2>{{error}}</h2></FONT>
+<FONT COLOR="##FF##"><h2>{{success}}</h2></FONT>
+
+ <h1> {% trans "Product graphics" %} </h1>
+ <script language="javascript" type="text/javascript" src="{{ STATIC_URL }}graphics/jquery.js"></script>
+ <script language="javascript" type="text/javascript" src="{{ STATIC_URL }}graphics/jquery.flot.js"></script>
+    <form method="post" action="">{% csrf_token %}    	
+		<div id="placeholder" style="width:600px;height:300px;"></div>
+		<script type="text/javascript" >
+		$(function () {
+    		var pr = []
+    		var dates = []   		
+    		var k = 0
+    		{% for i in prices %}    			
+    			pr.push([k, parseInt("{{i.value}}")])
+    			var l = ("{{i.date_init}}".split("."))[0]
+    			dates.push([k, l])
+    			k=k+1    			
+    		{% endfor %}    		    
+			
+			$.plot($("#placeholder"), [pr], {xaxis: {ticks: dates}}, {yaxis: {ticks: pr}});
+		});				
+		</script>
+		
+		<div id="placeholder1" style="width:600px;height:300px;"></div>
+		<script type="text/javascript" >
+		$(function () {
+    		var ord = []
+    		var dates = []   		
+    		var k = 0
+    		{% for i in orders_values %}    			
+    			ord.push([k, parseInt("{{i}}")])    			
+    			k=k+1    			
+    		{% endfor %}    
+    		k = 0		    
+    		{% for i in orders_times %}    			
+    			var l = ("{{i}}".split("."))[0]
+    			dates.push([k, l])    			
+    			k=k+1    			
+    		{% endfor %}  		
+			
+			$.plot($("#placeholder1"), [ord], {xaxis: {ticks: dates}}, {yaxis: {ticks: ord}});
+		});	
+		
+		</script>
+		
+ 	</form>
+ {% endblock %}
